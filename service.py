@@ -49,6 +49,16 @@ def program():
 	Button(panel1, text="STOP", command=apache2_stop).pack(side=LEFT, padx=2, pady=2)
 	""" ---------------------------------------------------------------------------------- """
 	
+	""" Tor Service COMMAND """
+	panel2 = Frame(service, borderwidth=1, relief=GROOVE)
+	panel2.pack(side=TOP, padx=4, pady=4)
+	Label(panel2, text="Service Tor").pack(padx=5, pady=2)
+	
+	Button(panel2, text="START", command=tor_start).pack(side=LEFT, padx=2, pady=2)
+	Button(panel2, text="RESTART", command=tor_restart).pack(side=LEFT, padx=2, pady=2)
+	Button(panel2, text="STOP", command=tor_stop).pack(side=LEFT, padx=2, pady=2)
+	""" ---------------------------------------------------------------------------------- """
+	
 	service.config(menu=menubar)
 	service.mainloop()
 	quit()
@@ -60,6 +70,10 @@ def mysql_stop(): os.system('sudo /etc/init.d/mysql stop'); check()
 def apache2_start(): os.system('sudo /etc/init.d/apache2 start'); check()
 def apache2_restart(): os.system('sudo /etc/init.d/apache2 restart'); check()
 def apache2_stop(): os.system('sudo /etc/init.d/apache2 stop'); check()
+
+def tor_start(): os.system('sudo /etc/init.d/tor start'); check()
+def tor_restart(): os.system('sudo /etc/init.d/tor restart'); check()
+def tor_stop(): os.system('sudo /etc/init.d/tor stop'); check()
 
 def check(): print("> Action:\t\t\t\t\t\t\t\t[ " + color.YELLOW + "TERMINATED" + color.END + " ]")
 
