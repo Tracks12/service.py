@@ -7,4 +7,5 @@ Interface Graphique de commande des Service Linux
 
 # Pré-requis :
 
-> Installation du module Tkinter pour python sous le système linux.
+> Lancement en mode administrateur, si le programme est lancer en utilisateur, un mot de passe administrateur sera demander.
+<br /> Installation du module "tkinter" pour python sous le système linux.
