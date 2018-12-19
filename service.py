@@ -6,6 +6,7 @@
 # --------------------------------------
 #  Program >>> service.py
 #  Function >>> Show & Control Services
+#  Version >>> 0.0.2-a
 # --------------------------------------
 
 import os, platform, sys
@@ -157,7 +158,7 @@ if("-h" in sys.argv):
 	print("")
 elif("-V" in sys.argv): print("Version: " + version + "\n")
 else:
-	if(platform.system() == "Linux" or platform.system() == "Darwin" ):
+	if(platform.system() == "Linux"):
 		if("-t" in sys.argv): tor = True
 		program()
 	else: print(" [ " + color.RED + "ERROR" + color.END + " ] - Operating System wasn't support\n")
