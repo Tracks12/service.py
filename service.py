@@ -123,10 +123,7 @@ def program():
 	menubar.add_cascade(label="Plus", menu=menu1)
 	
 	""" General Control COMMAND """
-	panel0 = Frame(service, bd=1, relief=GROOVE)
-	panel0.pack(side=TOP, padx=8, pady=8)
-	Label(panel0, text="General Service").pack(padx=5, pady=2)
-	madeButton(panel0, [startAll, restartAll, stopAll])
+	madePanel(service, "General Service", [startAll, restartAll, stopAll])
 	""" ---------------------------------------------------------------------------------- """
 	
 	""" Main Panel """
