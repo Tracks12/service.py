@@ -224,7 +224,7 @@ def program():
 	
 	window.config(menu=menubar)
 	window.mainloop()
-	window.destroy()
+	window.quit()
 	
 	print(name + "> " + color.RED + "Quitting_" + color.END)
 
