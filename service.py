@@ -168,43 +168,45 @@ def program():
 	""" Menu """
 	menubar = Menu(window, bd=0)
 	
-	menu0 = Menu(menubar, tearoff=0)
-	menu0.add_command(label="Quitter", font=['Ubuntu', 10], command=window.quit)
-	menubar.add_cascade(label="Fichier", font=['Ubuntu', 10], menu=menu0)
-	
-	menu1 = Menu(menubar, tearoff=0)
-	menu1.add_command(label="Démarrer Apache2", font=['Ubuntu', 10], command=apacheStart)
-	menu1.add_command(label="Redémarrer Apache2", font=['Ubuntu', 10], command=apacheRestart)
-	menu1.add_command(label="Arrêter Apache2", font=['Ubuntu', 10], command=apacheStop)
-	menu1.add_separator()
-	menu1.add_command(label="Configurer Apache2", font=['Ubuntu', 10], command=editApache)
-	menu1.add_separator()
-	menu1.add_command(label="Voir Access.log", font=['Ubuntu', 10], command=apacheAccess)
-	menu1.add_command(label="Voir Error.log", font=['Ubuntu', 10], command=apacheError)
-	menu1.add_separator()
-	menu1.add_command(label="Lister les Projets", font=['Ubuntu', 10], command=listProject)
-	menubar.add_cascade(label="Serveur", font=['Ubuntu', 10], menu=menu1)
-	
-	menu2 = Menu(menubar, tearoff=0)
-	menu2.add_command(label="Démarrer MySQL", font=['Ubuntu', 10], command=mysqlStart)
-	menu2.add_command(label="Redémarrer MySQL", font=['Ubuntu', 10], command=mysqlRestart)
-	menu2.add_command(label="Arrêter MySQL", font=['Ubuntu', 10], command=mysqlStop)
-	menu2.add_separator()
-	menu2.add_command(label="Configurer MySQL", font=['Ubuntu', 10], command=editMysql)
-	menubar.add_cascade(label="Base de Données", font=['Ubuntu', 10], menu=menu2)
+	menuContent = [
+		[
+			'Fichier', Menu(menubar, tearoff=0),
+			['Quitter'],
+			[window.quit]
+		],
+		[
+			'Serveur', Menu(menubar, tearoff=0),
+			['Démarrer Apache2', 'Redémarrer Apache2', 'Arrêter Apache2', 'Configurer Apache2', 'Voir Access.log', 'Voir Error.log', 'Lister les Projets'],
+			[apacheStart, apacheRestart, apacheStop, editApache, apacheAccess, apacheError, listProject]
+		],
+		[
+			'Base de Données', Menu(menubar, tearoff=0),
+			['Démarrer MySQL', 'Redémarrer MySQL', 'Arrêter MySQL', 'Configurer MySQL'],
+			[mysqlStart, mysqlRestart, mysqlStop, editMysql]
+		],
+		[
+			'Plus', Menu(menubar, tearoff=0),
+			['Aide', 'A propos du soft'],
+			[helper, about]
+		]
+	]
 	
 	if(tor):
-		menu3 = Menu(menubar, tearoff=0)
-		menu3.add_command(label="Démarrer Tor", font=['Ubuntu', 10], command=torStart)
-		menu3.add_command(label="Configurer Tor", font=['Ubuntu', 10], command=editTor)
-		menu3.add_separator()
-		menu3.add_command(label="Voir Tor.log", font=['Ubuntu', 10], command=torLog)
-		menubar.add_cascade(label="Tor", font=['Ubuntu', 10], menu=menu3)
+		menuContent.append([])
+		menuContent[4] = menuContent[3]
+		menuContent[3] = [
+			'Tor', Menu(menubar, tearoff=0),
+			['Démarrer Tor', 'Configurer Tor', 'Voir Tor.log'],
+			[torStart, editTor, torLog]
+		]
 	
-	menu4 = Menu(menubar, tearoff=0)
-	menu4.add_command(label="Aide", font=['Ubuntu', 10], command=helper)
-	menu4.add_command(label="A propos du soft", font=['Ubuntu', 10], command=about)
-	menubar.add_cascade(label="Plus", font=['Ubuntu', 10], menu=menu4)
+	for i in range(0, len(menuContent)):
+		for j, txt in enumerate(menuContent[i][2]):
+			menuContent[i][1].add_command(label=txt, font=['Ubuntu', 10], command=menuContent[i][3][j])
+			separator = [(i == 1) and (j in [2, 3, 5]), (i == 2) and (j == 2), tor and (i == 3) and (j == 1)]
+			if(True in separator): menuContent[i][1].add_separator()
+		
+		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu', 10], menu=menuContent[i][1])
 	""" ---------------------------------------------------------------------------------- """
 	
 	Label(window, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
