@@ -203,7 +203,8 @@ def program():
 	for i in range(0, len(menuContent)):
 		for j, txt in enumerate(menuContent[i][2]):
 			menuContent[i][1].add_command(label=txt, font=['Ubuntu', 10], command=menuContent[i][3][j])
-			if(True in [(i == 1) and (j in [2, 3, 5]), (i == 2) and (j == 2), tor and (i == 3) and (j in [2, 3])]): menuContent[i][1].add_separator()
+			if(True in [(i == 1) and (j in [2, 3, 5]), (i == 2) and (j == 2), tor and (i == 3) and (j in [2, 3])]):
+				menuContent[i][1].add_separator()
 		
 		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu', 10], menu=menuContent[i][1])
 	""" ---------------------------------------------------------------------------------- """
