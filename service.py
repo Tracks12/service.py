@@ -3,7 +3,7 @@
 
 # ----------------------
 #  Autor   : Anarchy
-#  Date    : 20/01/2019
+#  Date    : 21/01/2019
 #  Name    : service.py
 #  Version : 0.0.3-a
 # ----------------------
@@ -26,51 +26,50 @@ class color:
 
 def madeButton(panel, act):
 	for i, txt in enumerate(["START", "STOP", "RESTART"]):
-		Button(panel, text=txt, command=act[i]).grid(row=i, column=1, padx=6, pady=4, sticky=W)
+		Button(panel, text=txt, font=['Ubuntu', 9], command=act[i], width=8).grid(row=i, column=0, padx=6, pady=4, sticky=W)
 		i += 1
 
 def madeLabel(panel, labels):
 	for i, txt in enumerate(labels):
-		Label(panel, text=txt).grid(pady=1)
+		Label(panel, text=txt, font=['Ubuntu', 12]).grid(pady=1, sticky=W)
 		i += 1
 
 def madePanel(panel, panelName, r, act):
-	subpanel = Frame(panel, bd=1, relief=GROOVE)
-	subpanel.grid(row=r, column=0, padx=8, pady=8)
-	Label(subpanel, text=panelName).grid(row=0, column=0, padx=5, pady=2)
+	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu', 12])
+	subpanel.grid(row=1, column=r, padx=8, pady=8)
 	madeButton(subpanel, act)
 
 def editApache():
 	print(name + "> " + color.YELLOW + "Editing Apache2 Configuration File_" + color.END)
 	os.system("nano /etc/apache2/apache2.conf")
-	check()
+	check('Modification de apache2.conf')
 
 def editMysql():
 	print(name + "> " + color.YELLOW + "Editing MySQL Configuration File_" + color.END)
 	os.system("nano /etc/mysql/my.cnf")
-	check()
+	check('Modification de my.cnf')
 	
 def editTor():
 	print(name + "> " + color.YELLOW + "Editing Tor Configuration File_" + color.END)
 	os.system("nano /etc/tor/torsocks.conf")
-	check()
+	check('Modification de torsocks.conf')
 
 def apacheAccess(): os.system("cat /var/log/apache2/access.log")
 def apacheError(): os.system("cat /var/log/apache2/error.log")
 
 def torLog(): os.system("cat /var/log/tor/log")
 
-def apacheStart(): os.system(service[0]+'start'); check()
-def apacheRestart(): os.system(service[0]+'restart'); check()
-def apacheStop(): os.system(service[0]+'stop'); check()
+def apacheStart(): os.system(service[0]+'start'); check('Serveur Apache lancer')
+def apacheRestart(): os.system(service[0]+'restart'); check('Serveur Apache relancer')
+def apacheStop(): os.system(service[0]+'stop'); check('Serveur Apache arrêter')
 
-def mysqlStart(): os.system(service[1]+'start'); check()
-def mysqlRestart(): os.system(service[1]+'restart'); check()
-def mysqlStop(): os.system(service[1]+'stop'); check()
+def mysqlStart(): os.system(service[1]+'start'); check('Base de données MySQL lancer')
+def mysqlRestart(): os.system(service[1]+'restart'); check('Base de données MySQL relancer')
+def mysqlStop(): os.system(service[1]+'stop'); check('Base de données MySQL arrêter')
 
-def torStart(): os.system(service[2]+'start'); check()
-def torRestart(): os.system(service[2]+'restart'); check()
-def torStop(): os.system(service[2]+'stop'); check()
+def torStart(): os.system(service[2]+'start'); check('Service Tor lancer')
+def torRestart(): os.system(service[2]+'restart'); check('Service Tor relancer')
+def torStop(): os.system(service[2]+'stop'); check('Service Tor arrêter')
 
 def startAll():
 	apacheStart()
@@ -87,7 +86,10 @@ def stopAll():
 	mysqlStop()
 	if(tor): torStop()
 
-def check(): print(name + "> Action:\t\t\t\t[" + color.B_GREEN + " TERMINATED " + color.END + "]")
+def check(act):
+	global step
+	step.set(act)
+	print(name + "> Action:\t\t\t\t[" + color.B_GREEN + " TERMINATED " + color.END + "]")
 
 def listProject():
 	racine = "/var/www/html"; output = ""
@@ -108,26 +110,28 @@ def listProject():
 def about():
 	print(name + "> " + color.YELLOW + "Show more info_" + color.END)
 	aboutus = Tk()
-	aboutus.title('Service { ABOUT }')
+	aboutus.title('A Propos')
 	aboutus.resizable(width=FALSE, height=FALSE)
 	
 	content0 = Frame(aboutus, bd=0)
-	content0.pack(padx=25, pady=50, side=TOP)
+	content0.grid(row=0, column=0, padx=25, pady=30)
+	Label(content0, text=name, font=['Ubuntu', 24]).grid(row=0, column=0, padx=0, pady=20, sticky=W)
 	madeLabel(content0, [
-		version,
+		"Dernière Mise à Jour : " + date[1],
+		"Version : " + version,
 		"Ce programme a été écrit en python2",
 		"github.com/Tracks12/CustomServiceCommand"
 	])
-	Label(aboutus, text="Anarchy").pack(padx=25, pady=10, side=BOTTOM)
+	Label(aboutus, text="Anarchy", font=['Ubuntu', 10]).grid(row=1, column=0)
 	
 	aboutus.mainloop()
 
 def helper():
 	print(name + "> " + color.YELLOW + "Show helper_" + color.END)
 	helper = Tk()
-	helper.title('Service { HELPER }')
+	helper.title('Aide')
 	
-	Label(helper, text="Aide aux fonctionnalités").pack(padx=30, pady=20)
+	Label(helper, text="Aide aux fonctionnalités", font=['Ubuntu', 12]).pack(padx=30, pady=20)
 	
 	article0 = Frame(helper, bd=0)
 	article0.pack(padx=50, pady=20)
@@ -140,7 +144,7 @@ def helper():
 	helper.mainloop()
 
 def program():
-	global name, service, tor, version
+	global name, service, step, tor, version
 	
 	os.system("clear")
 	print(name + "> " + color.GREEN + "Runing Service Command GRAPH mod_" + color.END)
@@ -156,71 +160,78 @@ def program():
 	]
 	
 	window = Tk()
-	window.title('Service { COMMAND PANEL }')
+	window.title('Service ' + version)
 	window.resizable(width=FALSE, height=FALSE)
+	
+	step = StringVar()
 	
 	""" Menu """
 	menubar = Menu(window, bd=0)
 	
 	menu0 = Menu(menubar, tearoff=0)
-	menu0.add_command(label="Quitter", command=window.quit)
-	menubar.add_cascade(label="Fichier", menu=menu0)
+	menu0.add_command(label="Quitter", font=['Ubuntu', 10], command=window.quit)
+	menubar.add_cascade(label="Fichier", font=['Ubuntu', 10], menu=menu0)
 	
 	menu1 = Menu(menubar, tearoff=0)
-	menu1.add_command(label="Démarrer Apache2", command=apacheStart)
-	menu1.add_command(label="Redémarrer Apache2", command=apacheRestart)
-	menu1.add_command(label="Arrêter Apache2", command=apacheStop)
+	menu1.add_command(label="Démarrer Apache2", font=['Ubuntu', 10], command=apacheStart)
+	menu1.add_command(label="Redémarrer Apache2", font=['Ubuntu', 10], command=apacheRestart)
+	menu1.add_command(label="Arrêter Apache2", font=['Ubuntu', 10], command=apacheStop)
 	menu1.add_separator()
-	menu1.add_command(label="Configurer Apache2", command=editApache)
+	menu1.add_command(label="Configurer Apache2", font=['Ubuntu', 10], command=editApache)
 	menu1.add_separator()
-	menu1.add_command(label="Voir Access.log", command=apacheAccess)
-	menu1.add_command(label="Voir Error.log", command=apacheError)
+	menu1.add_command(label="Voir Access.log", font=['Ubuntu', 10], command=apacheAccess)
+	menu1.add_command(label="Voir Error.log", font=['Ubuntu', 10], command=apacheError)
 	menu1.add_separator()
-	menu1.add_command(label="Lister les Projets", command=listProject)
-	menubar.add_cascade(label="Serveur", menu=menu1)
+	menu1.add_command(label="Lister les Projets", font=['Ubuntu', 10], command=listProject)
+	menubar.add_cascade(label="Serveur", font=['Ubuntu', 10], menu=menu1)
 	
 	menu2 = Menu(menubar, tearoff=0)
-	menu2.add_command(label="Démarrer MySQL", command=mysqlStart)
-	menu2.add_command(label="Redémarrer MySQL", command=mysqlRestart)
-	menu2.add_command(label="Arrêter MySQL", command=mysqlStop)
+	menu2.add_command(label="Démarrer MySQL", font=['Ubuntu', 10], command=mysqlStart)
+	menu2.add_command(label="Redémarrer MySQL", font=['Ubuntu', 10], command=mysqlRestart)
+	menu2.add_command(label="Arrêter MySQL", font=['Ubuntu', 10], command=mysqlStop)
 	menu2.add_separator()
-	menu2.add_command(label="Configurer MySQL", command=editMysql)
-	menubar.add_cascade(label="Base de Données", menu=menu2)
+	menu2.add_command(label="Configurer MySQL", font=['Ubuntu', 10], command=editMysql)
+	menubar.add_cascade(label="Base de Données", font=['Ubuntu', 10], menu=menu2)
 	
 	if(tor):
 		menu3 = Menu(menubar, tearoff=0)
-		menu3.add_command(label="Démarrer Tor", command=torStart)
-		menu3.add_command(label="Configurer Tor", command=editTor)
+		menu3.add_command(label="Démarrer Tor", font=['Ubuntu', 10], command=torStart)
+		menu3.add_command(label="Configurer Tor", font=['Ubuntu', 10], command=editTor)
 		menu3.add_separator()
-		menu3.add_command(label="Voir Tor.log", command=torLog)
-		menubar.add_cascade(label="Tor", menu=menu3)
+		menu3.add_command(label="Voir Tor.log", font=['Ubuntu', 10], command=torLog)
+		menubar.add_cascade(label="Tor", font=['Ubuntu', 10], menu=menu3)
 	
 	menu4 = Menu(menubar, tearoff=0)
-	menu4.add_command(label="Aide", command=helper)
-	menu4.add_command(label="A propos du soft", command=about)
-	menubar.add_cascade(label="Plus", menu=menu4)
+	menu4.add_command(label="Aide", font=['Ubuntu', 10], command=helper)
+	menu4.add_command(label="A propos du soft", font=['Ubuntu', 10], command=about)
+	menubar.add_cascade(label="Plus", font=['Ubuntu', 10], menu=menu4)
 	""" ---------------------------------------------------------------------------------- """
 	
+	Label(window, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
+	
 	""" General Control COMMAND """
-	madePanel(window, "General Service", 0, [startAll, stopAll, restartAll])
+	madePanel(window, "General", 0, [startAll, stopAll, restartAll])
 	""" ---------------------------------------------------------------------------------- """
 	
 	""" Main Panel """
 	panel1 = Frame(window, bd=1, relief=GROOVE)
-	panel1.grid(row=0, column=1, padx=8, pady=8)
+	panel1.grid(row=1, column=1, padx=8, pady=8)
 	
 	# Apache2 Service COMMAND
-	madePanel(panel1, "Service Apache2", 0, [apacheStart, apacheStop, apacheRestart])
+	madePanel(panel1, "Apache2", 0, [apacheStart, apacheStop, apacheRestart])
 	
 	# MySQL Service COMMAND
-	madePanel(panel1, "Service MySQL", 1, [mysqlStart, mysqlStop, mysqlRestart])
+	madePanel(panel1, "MySQL", 1, [mysqlStart, mysqlStop, mysqlRestart])
 	
 	#Tor Service COMMAND
-	if(tor): madePanel(panel1, "Service Tor", 2, [torStart, torStop, torRestart])
+	if(tor): madePanel(panel1, "Tor", 2, [torStart, torStop, torRestart])
 	""" ---------------------------------------------------------------------------------- """
 	
-	Button(window, text="Lister les Projets", command=listProject).grid(row=1, column=0, padx=8, pady=8)
-	Button(window, text="QUIT", command=window.quit).grid(row=1, column=1, padx=8, pady=8, sticky=E)
+	Button(window, text="Lister les Projets", font=['Ubuntu', 10], command=listProject).grid(row=2, column=0, padx=8, pady=8)
+	Button(window, text="Quitter", font=['Ubuntu', 10], command=window.quit).grid(row=2, column=1, padx=8, pady=8, sticky=E)
+	Label(window, textvariable=step, font=['Monospace', 8]).grid(row=3, column=0, columnspan=2, padx=4, sticky=W)
+	
+	step.set("Prêt")
 	
 	window.config(menu=menubar)
 	window.mainloop()
@@ -228,7 +239,8 @@ def program():
 	
 	print(name + "> " + color.RED + "Quitting_" + color.END)
 
-name = 'Service'
+date = ['10 avr 2017', '20 janv 2019']
+name = 'Service.py'
 tor = False
 version = "v_0.0.3-a"
 
