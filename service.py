@@ -31,11 +31,11 @@ def madeButton(panel, act):
 
 def madeLabel(panel, labels):
 	for i, txt in enumerate(labels):
-		Label(panel, text=txt, font=['Ubuntu', 12]).grid(pady=1, sticky=W)
+		Label(panel, text=txt, font=['Ubuntu', 11]).grid(pady=1, sticky=W)
 		i += 1
 
 def madePanel(panel, panelName, r, act):
-	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu', 12])
+	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu Light', 12])
 	subpanel.grid(row=1, column=r, padx=8, pady=8)
 	madeButton(subpanel, act)
 
@@ -115,7 +115,7 @@ def about():
 	
 	content0 = Frame(aboutus, bd=0)
 	content0.grid(row=0, column=0, padx=25, pady=30)
-	Label(content0, text=name, font=['Ubuntu', 24]).grid(row=0, column=0, padx=0, pady=20, sticky=W)
+	Label(content0, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, padx=0, pady=20, sticky=W)
 	madeLabel(content0, [
 		"Dernière Mise à Jour : " + date[1],
 		"Version : " + version,
@@ -138,7 +138,7 @@ def helper():
 	madeLabel(article0, [
 		"START : Démarre le service concerné",
 		"STOP : Arrête le service concerné",
-		"RESTART : Redémarre le service concerné"
+		"RESTART : Redémarre le service concerné\n"
 	])
 	
 	helper.mainloop()
@@ -202,11 +202,11 @@ def program():
 	
 	for i in range(0, len(menuContent)):
 		for j, txt in enumerate(menuContent[i][2]):
-			menuContent[i][1].add_command(label=txt, font=['Ubuntu', 10], command=menuContent[i][3][j])
+			menuContent[i][1].add_command(label=txt, font=['Ubuntu Light', 10], command=menuContent[i][3][j])
 			if(True in [(i == 1) and (j in [2, 3, 5]), (i == 2) and (j == 2), tor and (i == 3) and (j in [2, 3])]):
 				menuContent[i][1].add_separator()
 		
-		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu', 10], menu=menuContent[i][1])
+		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu Light', 10], menu=menuContent[i][1])
 	""" ---------------------------------------------------------------------------------- """
 	
 	Label(window, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
@@ -231,7 +231,7 @@ def program():
 	
 	Button(window, text="Lister les Projets", font=['Ubuntu', 10], command=listProject).grid(row=2, column=0, padx=8, pady=8)
 	Button(window, text="Quitter", font=['Ubuntu', 10], command=window.quit).grid(row=2, column=1, padx=8, pady=8, sticky=E)
-	Label(window, textvariable=step, font=['Monospace', 8]).grid(row=3, column=0, columnspan=2, padx=4, sticky=W)
+	Label(window, textvariable=step, font=['Monospace', 8]).grid(row=3, column=0, columnspan=2, padx=5, sticky=W)
 	
 	step.set("Prêt")
 	
