@@ -39,52 +39,37 @@ def madePanel(panel, panelName, r, act):
 	subpanel.grid(row=1, column=r, padx=8, pady=8)
 	madeButton(subpanel, act)
 
-def editApache():
-	print(name + "> " + color.YELLOW + "Editing Apache2 Configuration File_" + color.END)
-	os.system("nano /etc/apache2/apache2.conf")
-	check('Modification de apache2.conf')
-
-def editMysql():
-	print(name + "> " + color.YELLOW + "Editing MySQL Configuration File_" + color.END)
-	os.system("nano /etc/mysql/my.cnf")
-	check('Modification de my.cnf')
+def edit(serv):
+	if(serv == 'apache'): msg = ['Apache2', 'apache2/apache2.conf']
+	elif(serv == 'mysql'): msg = ['MySQL', 'mysql/my.cnf']
+	elif(serv == 'tor'): msg = ['Tor', 'tor/torsocks.conf']
 	
-def editTor():
-	print(name + "> " + color.YELLOW + "Editing Tor Configuration File_" + color.END)
-	os.system("nano /etc/tor/torsocks.conf")
-	check('Modification de torsocks.conf')
+	print(name + "> " + color.YELLOW + "Editing " + msg[0] + " Configuration File_" + color.END)
+	os.system("nano /etc/" + msg[1])
+	check('Modification de ' + msg[1])
 
-def apacheAccess(): os.system("cat /var/log/apache2/access.log")
-def apacheError(): os.system("cat /var/log/apache2/error.log")
+def viewLog(serv, log):
+	if(serv == 'apache'): path = 'apache2/'
+	elif(serv == 'tor'): path = 'tor/'
+	
+	os.system("cat /var/log/" + path + log)
 
-def torLog(): os.system("cat /var/log/tor/log")
+def serv(serv, x):
+	if(serv == 'apache'): msg = ['Serveur Apache ', 'sudo /etc/init.d/apache2 ']
+	elif(serv == 'mysql'): msg = ['Base de données MySQL ', 'sudo /etc/init.d/mysql ']
+	elif(serv == 'tor'): msg = ['Service Tor ', 'sudo /etc/init.d/tor ']
+	
+	if(x == 1): line = ['start', msg[0]+'lancer']
+	elif(x == 2): line = ['restart', msg[0]+'relancer']
+	elif(x == 0): line = ['stop', msg[0]+'arrêter']
+	
+	os.system(msg[1]+line[0])
+	check(line[1])
 
-def apacheStart(): os.system(service[0]+'start'); check('Serveur Apache lancer')
-def apacheRestart(): os.system(service[0]+'restart'); check('Serveur Apache relancer')
-def apacheStop(): os.system(service[0]+'stop'); check('Serveur Apache arrêter')
-
-def mysqlStart(): os.system(service[1]+'start'); check('Base de données MySQL lancer')
-def mysqlRestart(): os.system(service[1]+'restart'); check('Base de données MySQL relancer')
-def mysqlStop(): os.system(service[1]+'stop'); check('Base de données MySQL arrêter')
-
-def torStart(): os.system(service[2]+'start'); check('Service Tor lancer')
-def torRestart(): os.system(service[2]+'restart'); check('Service Tor relancer')
-def torStop(): os.system(service[2]+'stop'); check('Service Tor arrêter')
-
-def startAll():
-	apacheStart()
-	mysqlStart()
-	if(tor): torStart()
-
-def restartAll():
-	apacheRestart()
-	mysqlRestart()
-	if(tor): torRestart()
-
-def stopAll():
-	apacheStop()
-	mysqlStop()
-	if(tor): torStop()
+def servAll(x):
+	serv('apache', x)
+	serv('mysql', x)
+	if(tor): serv('tor', x)
 
 def check(act):
 	global step
@@ -115,16 +100,17 @@ def about():
 	
 	content0 = Frame(aboutus, bd=0)
 	content0.grid(row=0, column=0, padx=25, pady=30)
-	Label(content0, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, padx=0, pady=20, sticky=W)
+	Label(content0, text=name, font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
 	madeLabel(content0, [
 		"Dernière Mise à Jour : " + date[1],
 		"Version : " + version,
 		"Ce programme a été écrit en python2",
 		"github.com/Tracks12/CustomServiceCommand"
 	])
-	Label(aboutus, text="Anarchy", font=['Ubuntu', 10]).grid(row=1, column=0)
+	Label(aboutus, text="Anarchy", font=['Ubuntu', 10]).grid(row=1)
 	
 	aboutus.mainloop()
+	aboutus.quit()
 
 def helper():
 	print(name + "> " + color.YELLOW + "Show helper_" + color.END)
@@ -133,8 +119,8 @@ def helper():
 	
 	Label(helper, text="Aide aux fonctionnalités", font=['Ubuntu', 12]).pack(padx=30, pady=20)
 	
-	article0 = Frame(helper, bd=0)
-	article0.pack(padx=50, pady=20)
+	article0 = Frame(helper)
+	article0.pack(padx=30, pady=10)
 	madeLabel(article0, [
 		"START : Démarre le service concerné",
 		"STOP : Arrête le service concerné",
@@ -142,9 +128,10 @@ def helper():
 	])
 	
 	helper.mainloop()
+	helper.quit()
 
 def program():
-	global name, service, step, tor, version
+	global name, step, tor, version
 	
 	os.system("clear")
 	print(name + "> " + color.GREEN + "Runing Service Command GRAPH mod_" + color.END)
@@ -152,12 +139,6 @@ def program():
 	print("")
 	os.system("screenfetch")
 	print("")
-	
-	service = [
-		"sudo /etc/init.d/apache2 ",
-		"sudo /etc/init.d/mysql ",
-		"sudo /etc/init.d/tor "
-	]
 	
 	window = Tk()
 	window.title('Service ' + version)
@@ -177,12 +158,12 @@ def program():
 		[
 			'Serveur', Menu(menubar, tearoff=0),
 			['Démarrer Apache2', 'Redémarrer Apache2', 'Arrêter Apache2', 'Configurer Apache2', 'Voir Access.log', 'Voir Error.log', 'Lister les Projets'],
-			[apacheStart, apacheRestart, apacheStop, editApache, apacheAccess, apacheError, listProject]
+			[lambda:serv('apache', 1), lambda:serv('apache', 2), lambda:serv('apache', 0), lambda:edit('apache'), lambda:viewLog('apache', 'access.log'), lambda:viewLog('apache', 'error.log'), listProject]
 		],
 		[
 			'Base de Données', Menu(menubar, tearoff=0),
 			['Démarrer MySQL', 'Redémarrer MySQL', 'Arrêter MySQL', 'Configurer MySQL'],
-			[mysqlStart, mysqlRestart, mysqlStop, editMysql]
+			[lambda:serv('mysql', 1), lambda:serv('mysql', 2), lambda:serv('mysql', 0), lambda:edit('mysql')]
 		],
 		[
 			'Plus', Menu(menubar, tearoff=0),
@@ -193,11 +174,11 @@ def program():
 	
 	if(tor):
 		menuContent.append([])
-		menuContent[4] = menuContent[3]
-		menuContent[3] = [
+		menuContent[len(menuContent)-1] = menuContent[len(menuContent)-2]
+		menuContent[len(menuContent)-2] = [
 			'Tor', Menu(menubar, tearoff=0),
 			['Démarrer Tor', 'Redémarrer Tor', 'Arrêter Tor', 'Configurer Tor', 'Voir Tor.log'],
-			[torStart, torRestart, torStop, editTor, torLog]
+			[lambda:serv('tor', 1), lambda:serv('tor', 2), lambda:serv('tor', 0), lambda:edit('tor'), lambda:viewLog('tor', 'log')]
 		]
 	
 	for i in range(0, len(menuContent)):
@@ -212,21 +193,21 @@ def program():
 	Label(window, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
 	
 	""" General Control COMMAND """
-	madePanel(window, "General", 0, [startAll, stopAll, restartAll])
+	madePanel(window, "General", 0, [lambda:servAll(1), lambda:servAll(0), lambda:servAll(2)])
 	""" ---------------------------------------------------------------------------------- """
 	
 	""" Main Panel """
-	panel1 = Frame(window, bd=1, relief=GROOVE)
-	panel1.grid(row=1, column=1, padx=8, pady=8)
+	panel0 = Frame(window, bd=1, relief=GROOVE)
+	panel0.grid(row=1, column=1, padx=8, pady=8)
 	
 	# Apache2 Service COMMAND
-	madePanel(panel1, "Apache2", 0, [apacheStart, apacheStop, apacheRestart])
+	madePanel(panel0, "Apache2", 0, [lambda:serv('apache', 1), lambda:serv('apache', 0), lambda:serv('apache', 2)])
 	
 	# MySQL Service COMMAND
-	madePanel(panel1, "MySQL", 1, [mysqlStart, mysqlStop, mysqlRestart])
+	madePanel(panel0, "MySQL", 1, [lambda:serv('mysql', 1), lambda:serv('mysql', 0), lambda:serv('mysql', 2)])
 	
 	#Tor Service COMMAND
-	if(tor): madePanel(panel1, "Tor", 2, [torStart, torStop, torRestart])
+	if(tor): madePanel(panel0, "Tor", 2, [lambda:serv('tor', 1), lambda:serv('tor', 0), lambda:serv('tor', 2)])
 	""" ---------------------------------------------------------------------------------- """
 	
 	Button(window, text="Lister les Projets", font=['Ubuntu', 10], command=listProject).grid(row=2, column=0, padx=8, pady=8)
