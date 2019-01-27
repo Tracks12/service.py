@@ -6,12 +6,14 @@ Interface Graphique de commande des Service Linux
 > Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant un raccourci directe aux services web linux installer sur la machine.
 
 # Mode de lancement :
-Lancement normal avec les commandes des services Apache2 et MySQL
-<pre>:~# python service.py</pre>
+<ul>
+<li>Lancement normal avec les commandes des services Apache2 et MySQL
+  <pre>:~# python service.py</pre></li>
 
-Lancement en mode Tor ajoutant les commandes du service Tor si il est installer
+<li>Lancement en mode Tor ajoutant les commandes du service Tor si il est installer
 <pre>:~# python service.py -t</pre>
-<pre>:~# python service.py --tor</pre>
+<pre>:~# python service.py --tor</pre></li>
+</ul>
 
 # Pré-requis :
 
