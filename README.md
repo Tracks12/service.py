@@ -5,7 +5,15 @@ Interface Graphique de commande des Service Linux
 
 > Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant un raccourci directe aux services web linux installer sur la machine.
 
+# Mode de lancement :
+Lancement normal avec les commandes des services Apache2 et MySQL
+<pre>:~# python service.py</pre>
+
+Lancement en mode Tor ajoutant les commandes du service Tor si il est installer
+<pre>:~# python service.py -t</pre>
+<pre>:~# python service.py --tor</pre>
+
 # Pré-requis :
 
-> Lancement en mode administrateur, si le programme est lancer en utilisateur, un mot de passe administrateur sera demander.
+Lancement en mode administrateur, si le programme est lancer en utilisateur, un mot de passe administrateur sera demander.
 <br /> Installation du module "tkinter" pour python sous le système linux.
