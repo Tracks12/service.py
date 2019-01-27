@@ -1,5 +1,3 @@
-https://github.com/Tracks12/CustomServiceCommand/archive/0.0.4-a.zip
-
 # Aperçu
 
 <img src='https://raw.githubusercontent.com/Tracks12/CustomServiceCommand/master/ihm.png' />
