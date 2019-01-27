@@ -41,3 +41,5 @@ Liste des arguments :
   <li>Lancement en mode administrateur</li>
   <li>Compatible uniquement sous Linux</li>
 </ul>
+
+Par <a href="https://github.com/Tracks12">Anarchy</a>
