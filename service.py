@@ -14,9 +14,16 @@ import os, platform, sys, time
 from Tkinter import *
 
 date = ['10 avr 2017', '20 janv 2019']
+dev = 'Anarchy'
 name = 'service.py'
 tor = False
-version = "v_0.0.3-a"
+version = "v_0.0.4-a"
+
+button = [
+	[0, 0, 0],
+	[0, 0, 0],
+	[0, 0, 0]
+]
 
 class color:
 	BOLD	= '\033[1m'
@@ -32,9 +39,12 @@ class color:
 	
 	END	= '\033[0m'
 
-def madeButton(panel, act):
-	for i, txt in enumerate(["START", "STOP", "RESTART"]):
-		Button(panel, text=txt, font=['Ubuntu', 9], command=act[i], width=8).grid(row=i, column=0, padx=6, pady=4, sticky=W)
+def madeButton(panel, act, r):
+	global button
+	
+	for i, txt in enumerate(['START', 'RESTART', 'CONFIG']):
+		button[r][i] = Button(panel, text=txt, font=['Ubuntu', 9], command=act[i], width=8, state=NORMAL)
+		button[r][i].grid(row=i, column=0, padx=6, pady=4, sticky=W)
 
 def madeLabel(panel, labels):
 	for i, txt in enumerate(labels):
@@ -43,7 +53,7 @@ def madeLabel(panel, labels):
 def madePanel(panel, panelName, r, act):
 	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu Light', 12])
 	subpanel.grid(row=1, column=r, padx=8, pady=8)
-	madeButton(subpanel, act)
+	madeButton(subpanel, act, r)
 
 def edit(serv):
 	if(serv == 'apache'): msg = ['Apache2', 'apache2/apache2.conf']
@@ -60,14 +70,22 @@ def viewLog(serv, log):
 	
 	os.system("cat /var/log/" + path + log)
 
-def serv(serv, x):
-	if(serv == 'apache'): msg = ['Serveur Apache ', 'sudo /etc/init.d/apache2 ']
-	elif(serv == 'mysql'): msg = ['Base de données MySQL ', 'sudo /etc/init.d/mysql ']
-	elif(serv == 'tor'): msg = ['Service Tor ', 'sudo /etc/init.d/tor ']
+def serv(s, x):
+	global button
 	
-	if(x == 1): line = ['start', msg[0]+'lancer']
+	if(s == 'apache'): msg = ['Serveur Apache ', 'sudo /etc/init.d/apache2 ', 0]
+	elif(s == 'mysql'): msg = ['Base de données MySQL ', 'sudo /etc/init.d/mysql ', 1]
+	elif(s == 'tor'): msg = ['Service Tor ', 'sudo /etc/init.d/tor ', 2]
+	
+	if(x == 1):
+		line = ['start', msg[0]+'lancer']
+		button[msg[2]][0].config(text='STOP', command=lambda:serv(s, 0))
+	
 	elif(x == 2): line = ['restart', msg[0]+'relancer']
-	elif(x == 0): line = ['stop', msg[0]+'arrêter']
+	
+	elif(x == 0):
+		line = ['stop', msg[0]+'arrêter']
+		button[msg[2]][0].config(text='START', command=lambda:serv(s, 1))
 	
 	os.system(msg[1]+line[0])
 	check(line[1])
@@ -116,12 +134,13 @@ def about():
 	content0.grid(row=0, column=0, padx=25, pady=30)
 	Label(content0, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
 	madeLabel(content0, [
+		"Ecrit le : " + date[0],
 		"Dernière Mise à Jour : " + date[1],
 		"Version : " + version,
-		"Ce programme a été écrit en python2",
+		"\nCe programme a été écrit en python2",
 		"github.com/Tracks12/CustomServiceCommand"
 	])
-	Label(aboutus, text="Anarchy", font=['Ubuntu', 10]).grid(row=1)
+	Label(aboutus, text=dev, font=['Ubuntu', 10]).grid(row=1)
 	
 	aboutus.mainloop()
 	aboutus.quit()
@@ -202,23 +221,30 @@ def main():
 	
 	Label(window, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
 	
+	panel = [
+		LabelFrame(window, bd=1, relief=GROOVE, text="General", font=['Ubuntu Light', 12]),
+		Frame(window, bd=1, relief=GROOVE)
+	]
+	
 	""" General Control COMMAND """
 	# General Service COMMAND
-	madePanel(window, "General", 0, [lambda:servAll(1), lambda:servAll(0), lambda:servAll(2)])
+	panel[0].grid(row=1, column=0, padx=8, pady=8)
+	Button(panel[0], text='START', font=['Ubuntu', 9], command=lambda:servAll(1), width=8).grid(row=0, column=0, padx=6, pady=4, sticky=W)
+	Button(panel[0], text='STOP', font=['Ubuntu', 9], command=lambda:servAll(0), width=8).grid(row=1, column=0, padx=6, pady=4, sticky=W)
+	Button(panel[0], text='RESTART', font=['Ubuntu', 9], command=lambda:servAll(2), width=8).grid(row=2, column=0, padx=6, pady=4, sticky=W)
 	""" ---------------------------------------------------------------------------------- """
 	
 	""" Main Panel """
-	panel = Frame(window, bd=1, relief=GROOVE)
-	panel.grid(row=1, column=1, padx=8, pady=8)
+	panel[1].grid(row=1, column=1, padx=8, pady=8)
 	
 	# Apache2 Service COMMAND
-	madePanel(panel, "Apache2", 0, [lambda:serv('apache', 1), lambda:serv('apache', 0), lambda:serv('apache', 2)])
+	madePanel(panel[1], "Apache2", 0, [lambda:serv('apache', 1), lambda:serv('apache', 2), lambda:edit('apache')])
 	
 	# MySQL Service COMMAND
-	madePanel(panel, "MySQL", 1, [lambda:serv('mysql', 1), lambda:serv('mysql', 0), lambda:serv('mysql', 2)])
+	madePanel(panel[1], "MySQL", 1, [lambda:serv('mysql', 1), lambda:serv('mysql', 2), lambda:edit('mysql')])
 	
 	#Tor Service COMMAND
-	if(tor): madePanel(panel, "Tor", 2, [lambda:serv('tor', 1), lambda:serv('tor', 0), lambda:serv('tor', 2)])
+	if(tor): madePanel(panel[1], "Tor", 2, [lambda:serv('tor', 1), lambda:serv('tor', 2), lambda:edit('tor')])
 	""" ---------------------------------------------------------------------------------- """
 	
 	Button(window, text="Lister les Projets", font=['Ubuntu', 10], command=listProject).grid(row=2, column=0, padx=8, pady=8)
@@ -237,23 +263,32 @@ arg = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
 	["-l" in sys.argv, "--list" in sys.argv],
 	["-t" in sys.argv, "--tor" in sys.argv],
-	["-v" in sys.argv, "--version" in sys.argv]
+	["-v" in sys.argv, "--version" in sys.argv],
+	["-a" in sys.argv, "--about" in sys.argv]
 ]
 
 if(True in arg[0]):
 	print(" python2 " + name + "\n")
 	print(" Option         Option longue GNU       Description")
+	print(" -a             --about                 A propos du soft")
 	print(" -h, -?         --help                  Affiche ce message")
 	print(" -l             --list                  Liste tous le repertoire du serveur")
 	print(" -t             --tor                   Lancement en mod Tor")
 	print(" -v             --version               Affiche la version du soft\n")
 
 elif(True in arg[1]): listProject()
-elif(True in arg[3]): print(" Version: " + version + "\n")
+elif(True in arg[3]): print(" " + version + "\n")
+elif(True in arg[4]):
+	print(" " + name.capitalize())
+	print("\n Writed      : " + date[0])
+	print(" Last Update : " + date[1])
+	print(" Version     : " + version)
+	print("\n This program was writed in python2")
+	print(" github.com/Tracks12/CustomServiceCommand")
+	print("\n " + dev + "\n")
 
 else:
 	if(platform.system() == "Linux"):
-		os.system("clear")
 		print("Running...")
 		time.sleep(.5)
 		screen()
