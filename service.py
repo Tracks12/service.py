@@ -1,15 +1,22 @@
 #!/usr/bin/python2
 # -*- coding: utf-8 -*-
 
-# ----------------------
-#  Autor   : Anarchy
-#  Date    : 21/01/2019
-#  Name    : service.py
-#  Version : 0.0.3-a
-# ----------------------
+"""
+	----------------------
+	 Autor   : Anarchy
+	 Date    : 21/01/2019
+	 Name    : service.py
+	 Version : 0.0.3-a
+	----------------------
+"""
 
-import os, platform, sys
+import os, platform, sys, time
 from Tkinter import *
+
+date = ['10 avr 2017', '20 janv 2019']
+name = 'service.py'
+tor = False
+version = "v_0.0.3-a"
 
 class color:
 	BOLD	= '\033[1m'
@@ -19,6 +26,7 @@ class color:
 	GREEN	= '\033[32m'
 	YELLOW	= '\033[33m'
 	PURPLE	= '\033[35m'
+	WHITE	= '\033[37m'
 	
 	B_GREEN	= '\033[42m'
 	
@@ -27,12 +35,10 @@ class color:
 def madeButton(panel, act):
 	for i, txt in enumerate(["START", "STOP", "RESTART"]):
 		Button(panel, text=txt, font=['Ubuntu', 9], command=act[i], width=8).grid(row=i, column=0, padx=6, pady=4, sticky=W)
-		i += 1
 
 def madeLabel(panel, labels):
 	for i, txt in enumerate(labels):
 		Label(panel, text=txt, font=['Ubuntu', 11]).grid(pady=1, sticky=W)
-		i += 1
 
 def madePanel(panel, panelName, r, act):
 	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu Light', 12])
@@ -77,10 +83,10 @@ def check(act):
 	print(name + "> Action:\t\t\t\t[" + color.B_GREEN + " TERMINATED " + color.END + "]")
 
 def listProject():
-	racine = "/var/www/html"; output = ""
+	info = ["/var/www/html", ""]
 	
-	print(name + "> " + color.YELLOW + "Listing Project in " + color.END + color.ITALIC + racine + color.END + "\n")
-	for i, txt in enumerate(os.listdir(racine)):
+	print(name + "> " + color.YELLOW + "Listing Project in " + color.END + color.ITALIC + info[0] + color.END + "\n")
+	for i, txt in enumerate(os.listdir(info[0])):
 		s = ""
 		if("." in txt): col = color.PURPLE;
 		else: col = color.BOLD + color.GREEN; s = "/"
@@ -88,9 +94,17 @@ def listProject():
 		if(("index.php" == txt) or ("index.html" == txt)): col = color.BOLD + color.PURPLE; s = " <- Index File"
 		elif(".htaccess" == txt): col = color.BOLD + color.YELLOW; s = " <- Apache Configuration File"
 		
-		output += "\t./" + col + txt + color.END + s + "\n"
+		info[1] += "\t./" + col + txt + color.END + s + "\n"
 	
-	print(output)
+	print(info[1])
+
+def screen():
+	print("\n" + color.BOLD + color.YELLOW + "     ____               O  ___        ___")
+	print("    | ___|----.---,-.--.-./ __|----. | _ \_ __")
+	print("    |___ | -__| .-| |  | | (__| -__| | ,_/\` /")
+	print("    |____|____|_| |___/|_|\___|____|.|_|  / /  " + color.RED + version)
+	print("             " + color.WHITE + "Take a easier control       " + color.BOLD + color.YELLOW + "/_/\n" + color.END)
+	time.sleep(1)
 
 def about():
 	print(name + "> " + color.YELLOW + "Show more info_" + color.END)
@@ -100,7 +114,7 @@ def about():
 	
 	content0 = Frame(aboutus, bd=0)
 	content0.grid(row=0, column=0, padx=25, pady=30)
-	Label(content0, text=name, font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
+	Label(content0, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
 	madeLabel(content0, [
 		"Dernière Mise à Jour : " + date[1],
 		"Version : " + version,
@@ -130,18 +144,14 @@ def helper():
 	helper.mainloop()
 	helper.quit()
 
-def program():
+def main():
 	global name, step, tor, version
 	
-	os.system("clear")
-	print(name + "> " + color.GREEN + "Runing Service Command GRAPH mod_" + color.END)
+	print(name + "> " + color.GREEN + "Initializing IHM Service Command_" + color.END)
 	if(tor): print(name + "> " + color.YELLOW + "Tor mod enabled_" + color.END)
-	print("")
-	os.system("screenfetch")
-	print("")
 	
 	window = Tk()
-	window.title('Service ' + version)
+	window.title(name.capitalize())
 	window.resizable(width=FALSE, height=FALSE)
 	
 	step = StringVar()
@@ -150,22 +160,22 @@ def program():
 	menubar = Menu(window, bd=0)
 	
 	menuContent = [
-		[
+		[ # Menu Principale
 			'Fichier', Menu(menubar, tearoff=0),
 			['Quitter'],
 			[window.quit]
 		],
-		[
+		[ # Menu Apache2
 			'Serveur', Menu(menubar, tearoff=0),
 			['Démarrer Apache2', 'Redémarrer Apache2', 'Arrêter Apache2', 'Configurer Apache2', 'Voir Access.log', 'Voir Error.log', 'Lister les Projets'],
 			[lambda:serv('apache', 1), lambda:serv('apache', 2), lambda:serv('apache', 0), lambda:edit('apache'), lambda:viewLog('apache', 'access.log'), lambda:viewLog('apache', 'error.log'), listProject]
 		],
-		[
+		[ # Menu MySQL
 			'Base de Données', Menu(menubar, tearoff=0),
 			['Démarrer MySQL', 'Redémarrer MySQL', 'Arrêter MySQL', 'Configurer MySQL'],
 			[lambda:serv('mysql', 1), lambda:serv('mysql', 2), lambda:serv('mysql', 0), lambda:edit('mysql')]
 		],
-		[
+		[ # Menu d'Information
 			'Plus', Menu(menubar, tearoff=0),
 			['Aide', 'A propos du soft'],
 			[helper, about]
@@ -175,7 +185,7 @@ def program():
 	if(tor):
 		menuContent.append([])
 		menuContent[len(menuContent)-1] = menuContent[len(menuContent)-2]
-		menuContent[len(menuContent)-2] = [
+		menuContent[len(menuContent)-2] = [ # Menu Tor
 			'Tor', Menu(menubar, tearoff=0),
 			['Démarrer Tor', 'Redémarrer Tor', 'Arrêter Tor', 'Configurer Tor', 'Voir Tor.log'],
 			[lambda:serv('tor', 1), lambda:serv('tor', 2), lambda:serv('tor', 0), lambda:edit('tor'), lambda:viewLog('tor', 'log')]
@@ -190,24 +200,25 @@ def program():
 		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu Light', 10], menu=menuContent[i][1])
 	""" ---------------------------------------------------------------------------------- """
 	
-	Label(window, text=name, font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
+	Label(window, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, column=0, columnspan=2, padx=20, pady=5, sticky=W)
 	
 	""" General Control COMMAND """
+	# General Service COMMAND
 	madePanel(window, "General", 0, [lambda:servAll(1), lambda:servAll(0), lambda:servAll(2)])
 	""" ---------------------------------------------------------------------------------- """
 	
 	""" Main Panel """
-	panel0 = Frame(window, bd=1, relief=GROOVE)
-	panel0.grid(row=1, column=1, padx=8, pady=8)
+	panel = Frame(window, bd=1, relief=GROOVE)
+	panel.grid(row=1, column=1, padx=8, pady=8)
 	
 	# Apache2 Service COMMAND
-	madePanel(panel0, "Apache2", 0, [lambda:serv('apache', 1), lambda:serv('apache', 0), lambda:serv('apache', 2)])
+	madePanel(panel, "Apache2", 0, [lambda:serv('apache', 1), lambda:serv('apache', 0), lambda:serv('apache', 2)])
 	
 	# MySQL Service COMMAND
-	madePanel(panel0, "MySQL", 1, [lambda:serv('mysql', 1), lambda:serv('mysql', 0), lambda:serv('mysql', 2)])
+	madePanel(panel, "MySQL", 1, [lambda:serv('mysql', 1), lambda:serv('mysql', 0), lambda:serv('mysql', 2)])
 	
 	#Tor Service COMMAND
-	if(tor): madePanel(panel0, "Tor", 2, [lambda:serv('tor', 1), lambda:serv('tor', 0), lambda:serv('tor', 2)])
+	if(tor): madePanel(panel, "Tor", 2, [lambda:serv('tor', 1), lambda:serv('tor', 0), lambda:serv('tor', 2)])
 	""" ---------------------------------------------------------------------------------- """
 	
 	Button(window, text="Lister les Projets", font=['Ubuntu', 10], command=listProject).grid(row=2, column=0, padx=8, pady=8)
@@ -222,11 +233,6 @@ def program():
 	
 	print(name + "> " + color.RED + "Quitting_" + color.END)
 
-date = ['10 avr 2017', '20 janv 2019']
-name = 'Service.py'
-tor = False
-version = "v_0.0.3-a"
-
 arg = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
 	["-l" in sys.argv, "--list" in sys.argv],
@@ -235,7 +241,7 @@ arg = [
 ]
 
 if(True in arg[0]):
-	print(" python2 service.py\n")
+	print(" python2 " + name + "\n")
 	print(" Option         Option longue GNU       Description")
 	print(" -h, -?         --help                  Affiche ce message")
 	print(" -l             --list                  Liste tous le repertoire du serveur")
@@ -247,8 +253,13 @@ elif(True in arg[3]): print(" Version: " + version + "\n")
 
 else:
 	if(platform.system() == "Linux"):
+		os.system("clear")
+		print("Running...")
+		time.sleep(.5)
+		screen()
 		if(True in arg[2]): tor = True
-		program()
+		main()
+	
 	else: print(" [ " + color.RED + "ERROR" + color.END + " ] - Operating System wasn't support\n")
 
 # -----
