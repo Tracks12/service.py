@@ -19,6 +19,12 @@ Interface Graphique de commande des Service Linux
 </ul>
 
 # Arguments :
+Syntax pour afficher la liste des arguments :
+<pre>:~# python2 service -h</pre>
+<pre>:~# python2 service -?</pre>
+<pre>:~# python2 service --help</pre>
+
+Liste des arguments :
 <pre> python2 service.py
 
  Option         Option longue GNU       Description
