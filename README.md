@@ -1,5 +1,4 @@
-# CustomServiceCommand
-Interface Graphique de commande des Service Linux
+# Aperçu
 
 <img src='https://raw.githubusercontent.com/Tracks12/CustomServiceCommand/master/ihm.png' />
 
