@@ -12,15 +12,15 @@
   </li>
   <li>
     Lancement en mode Tor ajoutant les commandes du service Tor si il est installer
-    <pre>:~# python2 service.py -t</pre>
+    <pre>:~# python2 service.py -t</pre><br />
     <pre>:~# python2 service.py --tor</pre>
   </li>
 </ul>
 
 # Arguments :
 Syntax pour afficher la liste des arguments :
-<pre>:~# python2 service -h</pre>
-<pre>:~# python2 service -?</pre>
+<pre>:~# python2 service -h</pre><br />
+<pre>:~# python2 service -?</pre><br />
 <pre>:~# python2 service --help</pre>
 
 Liste des arguments :
