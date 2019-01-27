@@ -18,6 +18,16 @@ Interface Graphique de commande des Service Linux
   </li>
 </ul>
 
+# Arguments :
+<pre> python2 service.py
+
+ Option         Option longue GNU       Description
+ -a             --about                 A propos du soft
+ -h, -?         --help                  Affiche ce message
+ -l             --list                  Liste tous le repertoire du serveur
+ -t             --tor                   Lancement en mod Tor
+ -v             --version               Affiche la version du soft</pre>
+
 # Pré-requis :
 <ul>
   <li>Installation de Python2</li>
