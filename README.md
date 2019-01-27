@@ -43,6 +43,6 @@ Liste des arguments :
 
 # Téléchargement
 <ul>
-  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.4-a.zip">v_0.0.3-a Service.zip</a></li>
-  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.4-a.tar.gz">v_0.0.3-a Service.tar.gz</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.4-a.zip">v_0.0.4-a Service.zip</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.4-a.tar.gz">v_0.0.4-a Service.tar.gz</a></li>
 </ul>
