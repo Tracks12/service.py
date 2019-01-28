@@ -132,7 +132,7 @@ def about():
 		"Dernière Mise à Jour : " + date[1],
 		"Version : " + version,
 		"\nCe programme a été écrit en python2",
-		"github.com/Tracks12/CustomServiceCommand"
+		"https://tracks12.github.io/service.py/"
 	], ['Ubuntu', 11])
 	Label(aboutus, text=dev, font=['Ubuntu', 9]).grid(row=1, pady=5)
 	
@@ -149,16 +149,16 @@ def helper():
 	article = [Frame(helper), Frame(helper)]
 	
 	article[0].grid(row=1, padx=20, pady=10, sticky=W)
-	Label(article[0], text="Commande :", font=['Ubuntu', 14]).grid(row=0, pady=5, sticky=W)
+	Label(article[0], text="Commande :", font=['Ubuntu', 14]).grid(row=0, pady=10, sticky=W)
 	madeLabel(article[0], [
 		"START\t : Démarre le service concerné",
 		"STOP\t : Arrête le service concerné",
 		"RESTART\t : Redémarre le service concerné",
-		"CONFIG\t : Modifie le fichier de Configuration avec l'éditeur de texte local"
+		"CONFIG\t : Modifie le fichier de configuration du service concerné avec l'éditeur de texte local"
 	], ['Ubuntu light', 10])
 	
 	article[1].grid(row=2, padx=20, pady=10, sticky=W)
-	Label(article[1], text="Lancement :", font=['Ubuntu', 14]).grid(row=0, pady=5, sticky=W)
+	Label(article[1], text="Lancement :", font=['Ubuntu', 14]).grid(row=0, pady=10, sticky=W)
 	madeLabel(article[1], helpArg, ['Monospace', 9])
 	
 	helper.mainloop()
@@ -296,7 +296,7 @@ elif(True in arg[4]):
 	print(" Last Update : " + date[1])
 	print(" Version     : " + version)
 	print("\n This program was writed in python2")
-	print(" github.com/Tracks12/CustomServiceCommand")
+	print(" https://tracks12.github.io/service.py/")
 	print("\n " + dev + "\n")
 
 else:
@@ -306,6 +306,7 @@ else:
 		screen()
 		if(True in arg[2]): tor = True
 		main()
+		print("Bye :)\n")
 	
 	else: print(" [ " + color.RED + "ERROR" + color.END + " ] - Operating System wasn't support\n")
 
