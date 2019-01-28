@@ -6,14 +6,14 @@
 	 Autor   : Anarchy
 	 Date    : 21/01/2019
 	 Name    : service.py
-	 Version : 0.0.3-a
+	 Version : 0.0.4-a
 	----------------------
 """
 
 import os, platform, sys, time
 from Tkinter import *
 
-date = ['10 avr 2017', '20 janv 2019']
+date = ['10 avr 2017', '28 janv 2019']
 dev = 'Anarchy'
 name = 'service.py'
 tor = False
