@@ -19,12 +19,6 @@ name = 'service.py'
 tor = False
 version = "v_0.0.4-a"
 
-button = [
-	[0, 0, 0],
-	[0, 0, 0],
-	[0, 0, 0]
-]
-
 class color:
 	BOLD	= '\033[1m'
 	ITALIC	= '\033[3m'
@@ -46,9 +40,9 @@ def madeButton(panel, act, r):
 		button[r][i] = Button(panel, text=txt, font=['Ubuntu', 9], command=act[i], width=8, state=NORMAL)
 		button[r][i].grid(row=i, column=0, padx=6, pady=4, sticky=W)
 
-def madeLabel(panel, labels):
+def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
-		Label(panel, text=txt, font=['Ubuntu', 11]).grid(pady=1, sticky=W)
+		Label(panel, text=txt, font=_font).grid(pady=1, sticky=W)
 
 def madePanel(panel, panelName, r, act):
 	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu Light', 12])
@@ -130,17 +124,17 @@ def about():
 	aboutus.title('A Propos')
 	aboutus.resizable(width=FALSE, height=FALSE)
 	
-	content0 = Frame(aboutus, bd=0)
-	content0.grid(row=0, column=0, padx=25, pady=30)
-	Label(content0, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
-	madeLabel(content0, [
+	content = Frame(aboutus, bd=0)
+	content.grid(row=0, column=0, padx=25, pady=30)
+	Label(content, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
+	madeLabel(content, [
 		"Ecrit le : " + date[0],
 		"Dernière Mise à Jour : " + date[1],
 		"Version : " + version,
 		"\nCe programme a été écrit en python2",
 		"github.com/Tracks12/CustomServiceCommand"
-	])
-	Label(aboutus, text=dev, font=['Ubuntu', 10]).grid(row=1)
+	], ['Ubuntu', 11])
+	Label(aboutus, text=dev, font=['Ubuntu', 9]).grid(row=1, pady=5)
 	
 	aboutus.mainloop()
 	aboutus.quit()
@@ -150,15 +144,22 @@ def helper():
 	helper = Tk()
 	helper.title('Aide')
 	
-	Label(helper, text="Aide aux fonctionnalités", font=['Ubuntu', 12]).pack(padx=30, pady=20)
+	Label(helper, text="Aide aux fonctionnalités", font=['Ubuntu', 20]).grid(row=0, pady=20)
 	
-	article0 = Frame(helper)
-	article0.pack(padx=30, pady=10)
-	madeLabel(article0, [
-		"START : Démarre le service concerné",
-		"STOP : Arrête le service concerné",
-		"RESTART : Redémarre le service concerné\n"
-	])
+	article = [Frame(helper), Frame(helper)]
+	
+	article[0].grid(row=1, padx=20, pady=10, sticky=W)
+	Label(article[0], text="Commande :", font=['Ubuntu', 14]).grid(row=0, pady=5, sticky=W)
+	madeLabel(article[0], [
+		"START\t : Démarre le service concerné",
+		"STOP\t : Arrête le service concerné",
+		"RESTART\t : Redémarre le service concerné",
+		"CONFIG\t : Modifie le fichier de Configuration avec l'éditeur de texte local"
+	], ['Ubuntu light', 10])
+	
+	article[1].grid(row=2, padx=20, pady=10, sticky=W)
+	Label(article[1], text="Lancement :", font=['Ubuntu', 14]).grid(row=0, pady=5, sticky=W)
+	madeLabel(article[1], helpArg, ['Monospace', 9])
 	
 	helper.mainloop()
 	helper.quit()
@@ -259,6 +260,12 @@ def main():
 	
 	print(name + "> " + color.RED + "Quitting_" + color.END)
 
+button = [
+	[0, 0, 0],
+	[0, 0, 0],
+	[0, 0, 0]
+]
+
 arg = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
 	["-l" in sys.argv, "--list" in sys.argv],
@@ -267,14 +274,19 @@ arg = [
 	["-a" in sys.argv, "--about" in sys.argv]
 ]
 
+helpArg = [
+	" python2 " + name + "\n",
+	" Option         Option longue GNU       Description",
+	" -a             --about                 A propos du soft",
+	" -h, -?         --help                  Affiche ce message",
+	" -l             --list                  Liste tous le repertoire du serveur",
+	" -t             --tor                   Lancement en mod Tor",
+	" -v             --version               Affiche la version du soft\n"
+]
+
 if(True in arg[0]):
-	print(" python2 " + name + "\n")
-	print(" Option         Option longue GNU       Description")
-	print(" -a             --about                 A propos du soft")
-	print(" -h, -?         --help                  Affiche ce message")
-	print(" -l             --list                  Liste tous le repertoire du serveur")
-	print(" -t             --tor                   Lancement en mod Tor")
-	print(" -v             --version               Affiche la version du soft\n")
+	for i, txt in enumerate(helpArg):
+		print(txt)
 
 elif(True in arg[1]): listProject()
 elif(True in arg[3]): print(" " + version + "\n")
