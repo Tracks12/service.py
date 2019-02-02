@@ -304,7 +304,7 @@ elif(True in arg[4]):
 
 else:
 	if(platform.system() == "Linux"):
-		print("Running...")
+		print("Launch with {}\nRunning...".format(python))
 		screen()
 		if(True in arg[2]): tor = True
 		main()
