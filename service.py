@@ -136,9 +136,10 @@ def about():
 	content.grid(row=0, column=0, padx=25, pady=30)
 	Label(content, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
 	madeLabel(content, [
-		"Ecrit le\t\t: " + date[0],
-		"Mis à Jour le\t: " + date[1],
-		"Version\t\t: " + version,
+		"Lancé avec {}\n".format(python),
+		"Ecrit le\t\t: {}".format(date[0]),
+		"Mis à Jour le\t: {}".format(date[1]),
+		"Version\t\t: {}".format(version),
 		"\nCe programme a été écrit en python",
 		"https://tracks12.github.io/service.py/"
 	], ['Ubuntu', 11])
@@ -274,7 +275,7 @@ arg, helpArg, aboutUs = [
 	["-v" in sys.argv, "--version" in sys.argv],
 	["-a" in sys.argv, "--about" in sys.argv]
 ], [
-	" python2 {}\n".format(name),
+	" python {}\n".format(name),
 	" Option         Option longue GNU       Description",
 	" -a             --about                 A propos du soft",
 	" -h, -?         --help                  Affiche ce message",
@@ -283,7 +284,7 @@ arg, helpArg, aboutUs = [
 	" -v             --version               Affiche la version du soft\n"
 ], [
 	" {}{}{}{}".format(color.BOLD, color.YELLOW, name.capitalize(), color.END),
-	" Running in {}".format(python),
+	" Running with {}".format(python),
 	"\n Writed      : {}".format(date[0]),
 	" Last Update : {}".format(date[1]),
 	" Version     : {}{}{}{}".format(color.BOLD, color.RED, version, color.END),
@@ -304,7 +305,7 @@ elif(True in arg[4]):
 
 else:
 	if(platform.system() == "Linux"):
-		print("Running with {}...".format(python))
+		print("Running...")
 		screen()
 		if(True in arg[2]): tor = True
 		main()
