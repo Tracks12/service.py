@@ -136,7 +136,6 @@ def about():
 	content.grid(row=0, column=0, padx=25, pady=30)
 	Label(content, text=name.capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
 	madeLabel(content, [
-		"Lancé avec {}\n".format(python),
 		"Ecrit le\t\t: {}".format(date[0]),
 		"Mis à Jour le\t: {}".format(date[1]),
 		"Version\t\t: {}".format(version),
