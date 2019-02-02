@@ -1,6 +1,6 @@
 # Aperçu
 
-<img src='https://raw.githubusercontent.com/Tracks12/CustomServiceCommand/master/ihm.png' />
+<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/ihm.png' />
 
 > Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant un raccourci directe aux services web linux installer sur la machine, à la fois compatible avec python2 et python3.
 
