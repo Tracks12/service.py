@@ -19,7 +19,7 @@
 
 # Arguments :
 Syntax pour afficher la liste des arguments :
-<pre>:~# python2 service -h
+<pre>:~# python service -h
 :~# python service -?
 :~# python service --help</pre>
 
