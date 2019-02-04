@@ -27,9 +27,9 @@ class color:
 	YELLOW	= '\033[33m'
 	PURPLE	= '\033[35m'
 	WHITE	= '\033[37m'
-	
-	B_GREEN	= '\033[42m'
-	
+
+
+
 	END	= '\033[0m'
 
 def madeButton(panel, act, r):
@@ -99,7 +99,7 @@ def servAll(x):
 def check(act):
 	global step
 	step.set(act)
-	print("{}> Action:\t\t\t\t[{} TERMINATED {}]".format(name, color.B_GREEN, color.END))
+	print("{}> Action:\t\t\t\t[ {}{}TERMINATED{} ]".format(name, color.BOLD, color.GREEN, color.END))
 
 def listProject():
 	info = ["/var/www/html", ""]
