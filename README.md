@@ -34,7 +34,9 @@ Liste des arguments :
  -t             --tor                   Lancement en mod Tor
  -v             --version               Affiche la version du soft</pre>
 
-# Gestion des configurations :
+# Gestion des Ressources & Configurations :
+Dès le démarrage de l'app, une analyse rapide des services présents sur la machine s'éxecute afin de voir si les services Apache2, MySQL et Tor sont bien installé, l'app ne démarrera qu'une fois les 3 services détecter sur la machine.
+
 Un accès direct au fichier de configuration du service avec le bouton "CONFIG", une fois le panneau d'édition ouvert, vous pouvez modifier les paramètres dès que vous avez terminer l'édition.
 
 <img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshot/configEdit.png' />
