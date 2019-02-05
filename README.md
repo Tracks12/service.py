@@ -28,21 +28,27 @@ Liste des arguments :
 
  Option         Option longue GNU       Description
  -a             --about                 A propos du soft
+ -c             --check                 Vérifie l'existance des services Web
  -h, -?         --help                  Affiche ce message
  -l             --list                  Liste tous le repertoire du serveur
  -t             --tor                   Lancement en mod Tor
  -v             --version               Affiche la version du soft</pre>
 
+# Gestion des configurations :
+Un accès direct au fichier de configuration du service avec le bouton "CONFIG", une fois le panneau d'édition ouvert, vous pouvez modifier les paramètres dès que vous avez terminer l'édition.
+
+<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshot/configEdit.png' />
+
 # Pré-requis :
 <ul>
   <li>Installation de Python 2 ou 3</li>
   <li>Installation du module "Tkinter" pour python2 ou "tkinter" pour python3</li>
-  <li>Lancement en mode administrateur (Demande un mot de passe lors du lancement du service dans le shell)</li>
+  <li>Lancement en mode administrateur (Demande un mot de passe lors du lancement de l'app dans le shell)</li>
   <li>Compatible uniquement sous Linux</li>
 </ul>
 
 # Téléchargement
 <ul>
-  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.5-a.zip">v_0.0.5-a Service.zip</a></li>
-  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.5-a.tar.gz">v_0.0.5-a Service.tar.gz</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.6-a.zip">v_0.0.6-a Service.zip</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.6-a.tar.gz">v_0.0.6-a Service.tar.gz</a></li>
 </ul>
