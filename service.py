@@ -1,12 +1,12 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """
 	----------------------
 	 Autor   : Anarchy
-	 Date    : 21/01/2019
+	 Date    : 05/02/2019
 	 Name    : service.py
-	 Version : 0.0.5-a
+	 Version : 0.0.6-a
 	----------------------
 """
 
@@ -15,8 +15,8 @@ try: from Tkinter import *
 except: from tkinter import *
 
 python = "Python {}.{}.{}".format(sys.version_info[0], sys.version_info[1], sys.version_info[2])
-button, label, date = [], [], ['10 avr 2017', '28 janv 2019']
-dev, name, tor, version = 'Anarchy', 'service.py', False, "v_0.0.5-a"
+button, label, date = [], [], ['10 avr 2017', '5 fev 2019']
+dev, name, tor, version = 'Anarchy', 'service.py', False, "v_0.0.6-a"
 
 class color:
 	BOLD	= '\033[1m'
@@ -27,9 +27,7 @@ class color:
 	YELLOW	= '\033[33m'
 	PURPLE	= '\033[35m'
 	WHITE	= '\033[37m'
-
-
-
+	
 	END	= '\033[0m'
 
 def madeButton(panel, act, r):
@@ -42,7 +40,7 @@ def madeButton(panel, act, r):
 
 def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
-		Label(panel, text=txt, font=_font).grid(pady=1, sticky=W)
+		Label(panel, text=txt, font=_font).grid(row=i+1, column=0, pady=1, sticky=W)
 
 def madePanel(panel, panelName, r, act):
 	subpanel = LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu Light', 12])
@@ -52,14 +50,38 @@ def madePanel(panel, panelName, r, act):
 	label[r].grid(row=0, column=0, padx=6, pady=4)
 	madeButton(subpanel, act, r)
 
-def edit(serv):
+def edit(serv):	
+	def save():
+		file = open("/etc/{}".format(msg[1]), "w")
+		file.write(area.get("1.0", END))
+		file.close()
+		
+		check('Modification de {}'.format(msg[1]))
+		config.destroy()
+	
 	if(serv == 'apache'): msg = ['Apache2', 'apache2/apache2.conf']
 	elif(serv == 'mysql'): msg = ['MySQL', 'mysql/my.cnf']
 	elif(serv == 'tor'): msg = ['Tor', 'tor/torsocks.conf']
 	
 	print("{}> {}Editing {} Configuration File{}_".format(name, color.YELLOW, msg[0], color.END))
-	os.system("nano /etc/{}".format(msg[1]))
-	check('Modification de {}'.format(msg[1]))
+	
+	config = Tk()
+	config.title("Edition Configuration {}".format(msg[0]))
+	config.resizable(width=FALSE, height=FALSE)
+	
+	file = open("/etc/{}".format(msg[1]), "r")
+	content = file.read()
+	file.close()
+	
+	area = Text(config, font=["Monospace", 9], height=40, width=81, wrap=WORD)
+	area.insert(END, content)
+	area.grid(row=0, column=0)
+	
+	Button(config, text="Modifier", font=["Ubuntu", 10], command=lambda:save()).grid(row=1, column=0, sticky=E)
+	Button(config, text="Annuler", font=["Ubuntu", 10], command=config.destroy).grid(row=1, column=0, sticky=W)
+	
+	config.mainloop()
+	config.quit()
 
 def viewLog(serv, log):
 	if(serv == 'apache'): path = 'apache2/'
@@ -70,9 +92,9 @@ def viewLog(serv, log):
 def serv(s, x):
 	global button
 	
-	if(s == 'apache'): msg = ['Serveur Apache', 'sudo /etc/init.d/apache2 ', 0]
-	elif(s == 'mysql'): msg = ['Base de données MySQL', 'sudo /etc/init.d/mysql ', 1]
-	elif(s == 'tor'): msg = ['Service Tor', 'sudo /etc/init.d/tor ', 2]
+	if(s == 'apache'): msg = ['Serveur Apache', 'apache2', 0]
+	elif(s == 'mysql'): msg = ['Base de données MySQL', 'mysql', 1]
+	elif(s == 'tor'): msg = ['Service Tor', 'tor', 2]
 	
 	if(x == 1):
 		line = ['start', '{} lancer'.format(msg[0])]
@@ -81,14 +103,13 @@ def serv(s, x):
 	
 	elif(x == 2):
 		line = ['restart', '{} relancer'.format(msg[0])]
-		label[msg[2]].config(text='STOPPED', bg="#AA0000")
 		label[msg[2]].config(text='LAUNCHED', bg="#00AA00")
 	elif(x == 0):
 		line = ['stop', '{} arrêter'.format(msg[0])]
 		label[msg[2]].config(text='STOPPED', bg="#AA0000")
 		button[msg[2]][0].config(text='START', command=lambda:serv(s, 1))
 	
-	os.system(msg[1]+line[0])
+	os.system("sudo /etc/init.d/{} {}".format(msg[1], line[0]))
 	check(line[1])
 
 def servAll(x):
@@ -99,31 +120,58 @@ def servAll(x):
 def check(act):
 	global step
 	step.set(act)
-	print("{}> Action:\t\t\t\t[ {}{}TERMINATED{} ]".format(name, color.BOLD, color.GREEN, color.END))
+	print(" [ {}{}FINISHED{} ]".format(color.BOLD, color.GREEN, color.END))
 
 def listProject():
 	info = ["/var/www/html", ""]
 	
 	print("{}> {}Listing Project in {}{}{}{}\n".format(name, color.YELLOW, color.END, color.ITALIC, info[0], color.END))
-	for i, txt in enumerate(os.listdir(info[0])):
-		s = ""
-		if("." in txt): col = color.PURPLE;
-		else: col = color.BOLD + color.GREEN; s = "/"
+	for txt in os.listdir(info[0]):
+		typeMsg = ["" ,""]
 		
-		if(("index.php" == txt) or ("index.html" == txt)): col = color.BOLD + color.PURPLE; s = " <- Index File"
-		elif(".htaccess" == txt): col = color.BOLD + color.YELLOW; s = " <- Apache Configuration File"
+		if("." in txt): typeMsg[0] += color.PURPLE;
+		else: typeMsg = [color.BOLD+color.GREEN, "/"]
 		
-		info[1] += "\t./{}{}{}{}\n".format(col, txt, color.END, s)
+		if(txt in ["index.php", "index.html"]): typeMsg = [color.BOLD+color.PURPLE, " <- Index File"]
+		elif(txt == ".htaccess"): typeMsg = [color.BOLD+color.YELLOW, " <- Apache Configuration File"]
+		
+		info[1] += "\t./{}{}{}{}\n".format(typeMsg[0], txt, color.END, typeMsg[1])
 	
 	print(info[1])
 
-def screen():
+def verify():
+	checked, DIR, services, stop = [], os.listdir('/etc/init.d/'), ['apache2', 'mysql', 'tor'], False
+	
 	time.sleep(.5)
-	print("\n{}{}     ____               O  ___        ___".format(color.BOLD, color.YELLOW))
-	print("    | ___|----.---,-.--.-./ __|----. | _ \_ __")
-	print("    |___ | -__| .-| |  | | (__| -__| | ,_/\` /")
-	print("    |____|____|_| |___/|_|\___|____|.|_|  / /  {}{}".format(color.RED, version))
-	print("             {}Take a easier control       {}{}/_/{}\n".format(color.BOLD + color.WHITE, color.BOLD, color.YELLOW, color.END))
+	print("{}> {}Checking installed services{}_".format(name, color.YELLOW, color.END))
+	for txt in services:
+		if(txt in DIR): checked.append([txt, True])
+		elif(not txt in DIR): checked.append([txt, False])
+	
+	for i, txt in enumerate(checked):
+		time.sleep(.1)
+		if(False in checked[i]):
+			stop = True
+			print(" [ {}NOT FOUND{} ] - {}".format(color.RED, color.END, checked[i][0]))
+	
+	if(stop): return False
+	else: print(" [ {}OK{} ] - No missing services\n".format(color.GREEN, color.END))
+	return True
+
+def splash():
+	time.sleep(.5)
+	screen = [
+		"\n{}{}     ____               O             ___".format(color.BOLD, color.YELLOW),
+		"    | ___|----.---,-.--.-.----.----. | _ \_ __",
+		"    |___ | -__| .-| |  | |  __| -__| | ,_/\` /",
+		"    |____|____|_| |___/|_|____|____|.|_|  / /\t{}{}".format(color.RED, version),
+		"             {}Take a easier control       {}{}/_/\t{}By {}{}\n".format(color.BOLD + color.WHITE, color.BOLD, color.YELLOW, color.PURPLE, dev, color.END)
+	]
+	
+	for txt in screen:
+		print(txt)
+		time.sleep(.1)
+	
 	time.sleep(.5)
 
 def about():
@@ -174,9 +222,7 @@ def helper():
 
 def main():
 	global name, step, tor, version
-	
-	print("{}> {}Initializing IHM Service Command{}_".format(name, color.GREEN, color.END))
-	if(tor): print("{}> {}Tor mod enabled{}_".format(name, color.YELLOW, color.END))
+	print("{}> {}Initializing IHM{}_".format(name, color.GREEN, color.END))
 	
 	window = Tk()
 	window.title(name.capitalize())
@@ -259,7 +305,8 @@ def main():
 	Button(window, text="Quitter", font=['Ubuntu', 10], command=window.quit).grid(row=2, column=1, padx=8, pady=8, sticky=E)
 	Label(window, textvariable=step, font=['Monospace', 8]).grid(row=3, column=0, columnspan=2, padx=5, sticky=W)
 	
-	step.set("Lancement sous {} Prêt".format(python))
+	servAll(1)
+	step.set("Lancement avec {} Prêt".format(python))
 	
 	window.config(menu=menubar)
 	window.mainloop()
@@ -272,11 +319,13 @@ arg, helpArg, aboutUs = [
 	["-l" in sys.argv, "--list" in sys.argv],
 	["-t" in sys.argv, "--tor" in sys.argv],
 	["-v" in sys.argv, "--version" in sys.argv],
-	["-a" in sys.argv, "--about" in sys.argv]
+	["-a" in sys.argv, "--about" in sys.argv],
+	["-c" in sys.argv, "--check" in sys.argv]
 ], [
 	" python {}\n".format(name),
 	" Option         Option longue GNU       Description",
 	" -a             --about                 A propos du soft",
+	" -c             --check                 Vérifie l'existance des services Web",
 	" -h, -?         --help                  Affiche ce message",
 	" -l             --list                  Liste tous le repertoire du serveur",
 	" -t             --tor                   Lancement en mod Tor",
@@ -284,33 +333,36 @@ arg, helpArg, aboutUs = [
 ], [
 	" {}{}{}{}".format(color.BOLD, color.YELLOW, name.capitalize(), color.END),
 	" Running with {}".format(python),
-	"\n Writed      : {}".format(date[0]),
-	" Last Update : {}".format(date[1]),
-	" Version     : {}{}{}{}".format(color.BOLD, color.RED, version, color.END),
+	"\n Writed\t\t: {}".format(date[0]),
+	" Last Update\t: {}".format(date[1]),
+	" Version\t: {}{}{}{}".format(color.BOLD, color.RED, version, color.END),
 	"\n This program was writed in python",
 	" {}https://tracks12.github.io/service.py/{}".format(color.YELLOW, color.END),
 	"\n {}\n".format(dev)
 ]
 
 if(True in arg[0]):
-	for i, txt in enumerate(helpArg):
-		print(txt)
+	for txt in helpArg: print(txt)
 
 elif(True in arg[1]): listProject()
 elif(True in arg[3]): print(" {}{}{}{}\n".format(color.BOLD, color.RED, version, color.END))
 elif(True in arg[4]):
-	for i, txt in enumerate(aboutUs):
-		print(txt)
+	for txt in aboutUs: print(txt)
 
+elif(True in arg[5]): verify()
 else:
-	if(platform.system() == "Linux"):
-		print("Launch with {}\nRunning...".format(python))
-		screen()
-		if(True in arg[2]): tor = True
-		main()
+	if((platform.system() == "Linux") and (os.environ["USER"] == "root")):
+		print("Launching with {}".format(python))
+		splash()
+		if(verify()):
+			if(True in arg[2]):
+				tor = True
+				print("{}> {}Tor mod enabled{}_".format(name, color.YELLOW, color.END))
+			main()
 		print("Bye :)\n")
 	
-	else: print(" [ {}ERROR{} ] - Operating System wasn't support\n".format(color.RED, color.END))
+	elif(os.environ["USER"] != "root"): os.system("sudo python service.py")
+	elif(platform.system() != "Linux"): print(" [ {}{}ERROR{} ] - Operating System wasn't support\n".format(color.BOLD, color.RED, color.END))
 
 # -----
 #  END
