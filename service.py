@@ -361,7 +361,9 @@ else:
 			main()
 		print("Bye :)\n")
 	
-	elif(os.environ["USER"] != "root"): os.system("sudo python service.py {}".format(sys.argv[1]))
+	elif(os.environ["USER"] != "root"):
+		sys.argv.append("")
+		os.system("sudo python service.py {}".format(sys.argv[1]))
 	elif(platform.system() != "Linux"): print(" [ {}{}ERROR{} ] - Operating System wasn't support\n".format(color.BOLD, color.RED, color.END))
 
 # -----
