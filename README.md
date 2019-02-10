@@ -1,6 +1,6 @@
 # Aperçu
 
-<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshot/ihm.png' />
+<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/ihm.png' />
 
 > Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant un raccourci directe aux services web linux installer sur la machine, à la fois compatible avec python2 et python3.
 
@@ -39,7 +39,11 @@ Dès le démarrage de l'app, une analyse rapide des services présents sur la ma
 
 Un accès direct au fichier de configuration du service avec le bouton "CONFIG", une fois le panneau d'édition ouvert, vous pouvez modifier les paramètres dès que vous avez terminer l'édition.
 
-<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshot/configEdit.png' />
+<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/conf.png' />
+
+L'accès direct au fichier log d'erreur et d'accès au serveur apache est aussi accessible dans le menu contextuel de l'app.
+
+<img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/log.png' />
 
 # Pré-requis :
 <ul>
