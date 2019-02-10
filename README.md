@@ -57,6 +57,7 @@ Si jamais vous auriez besoin de faire plus que l'app vous propose, vous pouvez a
 
 # Téléchargement
 <ul>
-  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.6-a.zip">v_0.0.6-a Service.zip</a></li>
-  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.6-a.tar.gz">v_0.0.6-a Service.tar.gz</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/releases/download/0.0.7-a/service.zip">service.zip</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.7-a.zip">Code Source zip</a></li>
+  <li><a href="https://github.com/Tracks12/service.py/archive/0.0.7-a.tar.gz">Code Source tar.gz</a></li>
 </ul>
