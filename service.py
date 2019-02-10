@@ -123,7 +123,7 @@ def listProject():
 		for j, raw in enumerate(content):
 			stick = W
 			if(not j): stick = ""
-			Label(panel[0], text=raw, font=["monospace", 9]).grid(row=i, column=j, padx=5, sticky=stick)
+			Label(panel[0], text=raw, font=["monospace", 8]).grid(row=i, column=j, padx=5, sticky=stick)
 	
 	global step
 	info = [
@@ -167,7 +167,7 @@ def listProject():
 	scroll = Scrollbar(panel[0])
 	scroll.grid(row=1, column=5, rowspan=i, sticky=NS)
 	
-	Label(dirProject, text="{} Elements Trouvés".format(i), font=["Ubuntu Light", 9]).grid(row=2, column=0, padx=5, pady=2, sticky=E)
+	Label(dirProject, text="{} Elements Trouvés".format(i), font=["Ubuntu Light", 8]).grid(row=2, column=0, padx=5, pady=2, sticky=E)
 	print(" [ {}INFO{} ] - {} Elements found !\n".format(color.BLUE, color.END, i))
 	
 	dirProject.mainloop()
