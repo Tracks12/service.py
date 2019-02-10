@@ -45,6 +45,8 @@ L'accès direct au fichier log d'erreur et d'accès au serveur apache est aussi 
 
 <img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/log.png' />
 
+Si jamais vous auriez besoin de faire plus que l'app vous propose, vous pouvez accéder au shell depuis l'app en cliquant sur le bouton "Terminal", une console s'ouvrira en mode admin.
+
 # Pré-requis :
 <ul>
   <li>Installation de Python 2 ou 3</li>
