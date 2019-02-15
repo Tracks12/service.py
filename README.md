@@ -3,7 +3,7 @@
 <img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/ihm.png' />
 
 > Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant un raccourci directe aux services web linux installer sur la machine, à la fois compatible avec python2 et python3.
-<br/>
+<br />
 # Mode de lancement :
 <ul>
   <li>
@@ -16,7 +16,7 @@
 :~# python service.py --tor</pre>
   </li>
 </ul>
-<br/>
+<br />
 # Arguments :
 Syntax pour afficher la liste des arguments :
 <pre>:~# python service -h
@@ -33,7 +33,7 @@ Liste des arguments :
  -l             --list                  Liste tous le repertoire du serveur
  -t             --tor                   Lancement en mod Tor
  -v             --version               Affiche la version du soft</pre>
-<br/>
+<br />
 # Gestion des Ressources & Configurations :
 Dès le démarrage de l'app, une analyse rapide des services présents sur la machine s'éxecute afin de voir si les services Apache2, MySQL et Tor sont bien installé, l'app ne démarrera qu'une fois les 3 services détecter sur la machine.
 
@@ -46,7 +46,7 @@ L'accès direct au fichier log d'erreur et d'accès au serveur apache est aussi 
 <img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/log.png' />
 
 Si jamais vous auriez besoin de faire plus que l'app vous propose, vous pouvez accéder au shell depuis l'app en cliquant sur le bouton "Terminal", une console s'ouvrira en mode admin.
-
+<br />
 # Pré-requis :
 <ul>
   <li>Installation de Python 2 ou 3</li>
@@ -54,7 +54,7 @@ Si jamais vous auriez besoin de faire plus que l'app vous propose, vous pouvez a
   <li>Lancement en mode administrateur (Demande un mot de passe lors du lancement de l'app dans le shell)</li>
   <li>Compatible uniquement sous Linux</li>
 </ul>
-
+<br />
 # Téléchargement
 <ul>
   <li><a href="https://github.com/Tracks12/service.py/releases/download/0.0.7-a/Service.zip"><b>Service.zip</b></a></li>
