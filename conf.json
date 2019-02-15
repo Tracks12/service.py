@@ -1,0 +1,6 @@
+{
+	"prog" : "python",
+	"services" : [ "apache2", "mysql" ],
+	"skin" : false,
+	"tor" : false
+}
