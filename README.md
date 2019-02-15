@@ -3,7 +3,7 @@
 <img src='https://raw.githubusercontent.com/Tracks12/service.py/master/screenshots/ihm.png' />
 
 > Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant un raccourci directe aux services web linux installer sur la machine, à la fois compatible avec python2 et python3.
-
+<br/>
 # Mode de lancement :
 <ul>
   <li>
@@ -16,7 +16,7 @@
 :~# python service.py --tor</pre>
   </li>
 </ul>
-
+<br/>
 # Arguments :
 Syntax pour afficher la liste des arguments :
 <pre>:~# python service -h
@@ -33,7 +33,7 @@ Liste des arguments :
  -l             --list                  Liste tous le repertoire du serveur
  -t             --tor                   Lancement en mod Tor
  -v             --version               Affiche la version du soft</pre>
-
+<br/>
 # Gestion des Ressources & Configurations :
 Dès le démarrage de l'app, une analyse rapide des services présents sur la machine s'éxecute afin de voir si les services Apache2, MySQL et Tor sont bien installé, l'app ne démarrera qu'une fois les 3 services détecter sur la machine.
 
