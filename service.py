@@ -4,7 +4,7 @@
 """
 	----------------------
 	 Autor   : Anarchy
-	 Date    : 13/02/2019
+	 Date    : 15/02/2019
 	 Name    : service.py
 	 Version : 0.0.8-a
 	----------------------
@@ -502,20 +502,6 @@ else:
 		sys.argv.append("")
 		if(sys.version_info[0] == 2): prog = "python2"
 		elif(sys.version_info[0] == 3): prog = "python3"
-		
-		"""login = Tk()
-		login.title(info[2].capitalize())
-		login.resizable(height=False, width=False)
-		
-		password = StringVar()
-		
-		Label(login, text="Mot de passe", font=["Ubuntu", 16]).grid(row=0, padx=(30, 0), pady=(40, 5), sticky=W)
-		Entry(login, textvariable=password, font=["Monospace", 16], show="*").grid(row=1, padx=30, pady=(0, 20), sticky=W+E)
-		Button(login, text="Valider", font=["Ubuntu", 10], command=login.destroy).grid(row=2, padx=(0, 30), pady=(0, 30), sticky=E)
-		
-		login.mainloop()
-		login.quit()"""
-		
 		os.system("sudo {} {} {}".format(prog, info[2], sys.argv[1]))
 	elif(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating System wasn't support\n".format(color.BOLD+color.RED, color.END))
 	else:
