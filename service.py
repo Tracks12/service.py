@@ -4,13 +4,13 @@
 """
 	----------------------
 	 Autor   : Anarchy
-	 Date    : 15/02/2019
+	 Date    : 16/02/2019
 	 Name    : service.py
 	 Version : 0.0.8-a
 	----------------------
 """
 
-import json, os, platform, sys, time
+import inspect, json, os, platform, sys, time
 try: from Tkinter import *
 except: from tkinter import *
 
@@ -168,9 +168,8 @@ def listProject():
 
 def edit(serv):
 	def save():
-		conf = open(path, "w")
-		conf.write(area.get("1.0", END))
-		conf.close()
+		with open(path, "w") as conf:
+			conf.write(area.get("1.0", END))
 		
 		check('Modification de {}'.format(msg[1]))
 		window.destroy()
@@ -181,7 +180,8 @@ def edit(serv):
 	
 	path = "/etc/{}/{}".format(serv, msg[1])
 	print("{}> {}Editing {} configuration file{}_".format(info[2], color.YELLOW, msg[0], color.END))
-	content = open(path, "r").read()
+	with open(path, "r") as content:
+		content = content.read()
 	
 	window = Tk()
 	window.title("Edition Configuration {}".format(msg[0]))
@@ -191,7 +191,7 @@ def edit(serv):
 	panel[0].grid(row=0, column=0)
 	
 	scroll = Scrollbar(panel[0])
-	scroll.grid(row=0, column=1, pady=1, sticky=NS)
+	scroll.grid(row=0, column=1, pady=1, sticky=N+S)
 	area = Text(panel[0], font=["Monospace", 9], height=40, width=81, wrap=WORD)
 	area.insert(END, content)
 	area.grid(row=0, column=0)
@@ -209,7 +209,8 @@ def viewLog(serv, log):
 	
 	print("{}> {}Show {} {} file{}_".format(info[2], color.YELLOW, serv, log, color.END))
 	step.set("Affichage du fichier {} {}".format(serv, log))
-	content = open("/var/log/{}/{}".format(serv, log), "r").read()
+	with open("/var/log/{}/{}".format(serv, log), "r") as content:
+		content = content.read()
 	
 	window = Tk()
 	window.title("Logs de {}".format(log))
@@ -219,7 +220,7 @@ def viewLog(serv, log):
 	panel[0].grid(row=0, column=0)
 	
 	scroll = Scrollbar(panel[0])
-	scroll.grid(row=0, column=1, pady=1, sticky=NS)
+	scroll.grid(row=0, column=1, pady=1, sticky=N+S)
 	area = Text(panel[0], font=["Monospace", 9], height=30, width=81, wrap=WORD)
 	area.insert(END, content)
 	area.grid(row=0, column=0)
@@ -379,7 +380,7 @@ def main():
 		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu Light', 10], menu=menuContent[i][1])
 	""" ---------------------------------------------------------------------------------- """
 	
-	logo = PhotoImage(file="assets/python.png")
+	logo = PhotoImage(file="{}/assets/python.png".format(info[6]))
 	logo = logo.subsample(35)
 	btn.append(Button(window, image=logo, command=theme))
 	btn[len(btn)-1].grid(row=0, column=0, ipadx=4, ipady=4, padx=(7, 0), pady=8, sticky=W)
@@ -416,7 +417,8 @@ def main():
 		panelCtnt[0].append(' Tor ')
 		panelCtnt[1].append([lambda:serv('tor', 1), lambda:serv('tor', 2), lambda:edit('tor')])
 	
-	for i, txt in enumerate(panelCtnt[0]): madePanel(panel[1], txt, i, panelCtnt[1][i])
+	for i, txt in enumerate(panelCtnt[0]):
+		madePanel(panel[1], txt, i, panelCtnt[1][i])
 	""" ---------------------------------------------------------------------------------- """
 	
 	""" Anex Panel """
@@ -452,16 +454,18 @@ def main():
 	
 	print("{}> {}Quitting{}_".format(info[2], color.RED, color.END))
 
-python = "Python {}.{}.{}".format(sys.version_info[0], sys.version_info[1], sys.version_info[2])
 button, label, subpanel, btn, lbl = [], [], [], [], []
 info = [
-	['10 avr 2017', '15 fev 2019'],
+	['10 avr 2017', '16 fev 2019'],
 	"Anarchy", "service.py", "v_0.0.8-a",
-	"https://tracks12.github.io/service.py/"
+	"https://tracks12.github.io/service.py/",
+	"Python {}.{}.{}".format(sys.version_info[0], sys.version_info[1], sys.version_info[2]),
+	os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 ]
 
-conf = json.loads(open("conf.json", "r").read())
-prog, services, skin, tor = conf["prog"], conf["services"], conf["skin"], conf["tor"]
+with open("{}/conf.json".format(info[6]), "r") as conf:
+	conf = json.load(conf)
+	prog, services, skin, tor = conf["prog"], conf["services"], conf["skin"], conf["tor"]
 
 arg, helpArg, aboutUs = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
@@ -481,7 +485,7 @@ arg, helpArg, aboutUs = [
 	" -v             --version               Affiche la version du soft\n"
 ], [
 	" {}".format(color.BOLD+color.YELLOW+info[2].capitalize()+color.END),
-	" Running with {}".format(python),
+	" Running with {}".format(info[5]),
 	"\n Writed\t\t: {}".format(info[0][0]),
 	" Last Update\t: {}".format(info[0][1]),
 	" Version\t: {}".format(color.BOLD+color.RED+info[3]+color.END),
@@ -498,14 +502,14 @@ elif(True in arg[4]):
 	for txt in aboutUs: print(txt)
 elif(True in arg[5]): verify()
 else:
-	if(os.environ["USER"] != "root"):
+	if(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating system wasn't support\n".format(color.BOLD+color.RED, color.END))
+	elif(os.environ["USER"] != "root"):
 		sys.argv.append("")
 		if(sys.version_info[0] == 2): prog = "python2"
 		elif(sys.version_info[0] == 3): prog = "python3"
-		os.system("sudo {} {} {}".format(prog, info[2], sys.argv[1]))
-	elif(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating System wasn't support\n".format(color.BOLD+color.RED, color.END))
+		os.system("sudo {} {}/{} {}".format(prog, info[6], info[2], sys.argv[1]))
 	else:
-		print("Launching with {}".format(python))
+		print("Launching with {}".format(info[5]))
 		splash()
 		if(True in arg[2] or tor):
 			tor = True
