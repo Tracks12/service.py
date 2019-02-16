@@ -11,8 +11,12 @@
 """
 
 import inspect, json, os, platform, sys, time
-try: from Tkinter import *
-except: from tkinter import *
+try:	# Python 2
+	import ttk
+	from Tkinter import *
+except:	# Python 3
+	import tkinter.ttk as ttk
+	from tkinter import *
 
 class color:
 	BOLD	= '\033[1m'
@@ -29,7 +33,7 @@ class color:
 
 def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
-		Label(panel, text=txt, font=_font).grid(row=i+1, column=0, pady=1, sticky=W)
+		Label(panel, text=txt, font=_font).grid(row=i+1, column=0, padx=8, pady=1, sticky=W)
 
 def madePanel(panel, panelName, r, act):
 	def madeButton(panel, act, r):
@@ -125,7 +129,7 @@ def listProject():
 	
 	print("{}> {}Listing Project in{} {}_".format(info[2], color.YELLOW, color.END, color.ITALIC+prop[0]+color.END))
 	try: step.set("Analyse du répertoire de projets {}".format(prop[0]))
-	except: """ """
+	except: """  """
 	
 	window = Tk()
 	window.title("Liste des Projets")
@@ -251,17 +255,19 @@ def shell():
 def about():
 	print("{}> {}Show more info{}_".format(info[2], color.YELLOW, color.END))
 	window = Tk()
-	window.title("A propos de {}".format(info[2].capitalize()))
+	window.title("A propos")
 	window.resizable(width=FALSE, height=FALSE)
 	
 	panel = [Frame(window, bd=0)]
-	panel[0].grid(row=0, column=0, padx=25, pady=30)
-	Label(panel[0], text=info[2].capitalize(), font=['Ubuntu', 20]).grid(row=0, pady=20, sticky=W)
+	panel[0].grid(row=0, column=0, padx=10, pady=(30, 20))
+	Label(panel[0], text=info[2].capitalize(), font=['Ubuntu', 20]).grid(row=0, padx=(8, 0), pady=(0, 10), sticky=W)
 	madeLabel(panel[0], [
+		"Lancer avec {}\n".format(info[5]),
 		"Ecrit le\t\t: {}".format(info[0][0]),
 		"Mis à Jour le\t: {}".format(info[0][1]),
 		"Version\t\t: {}".format(info[3]),
-		"\nCe programme a été écrit en python",
+		"Taille\t\t: {}\n".format(info[7]),
+		"Ce programme a été écrit en python",
 		info[4]
 	], ['Ubuntu', 11])
 	Label(window, text="By {}".format(info[1]), font=['Ubuntu', 9]).grid(row=1, pady=5)
@@ -272,26 +278,43 @@ def about():
 def helper():
 	print("{}> {}Show helper{}_".format(info[2], color.YELLOW, color.END))
 	window = Tk()
-	window.title("{} Aide".format(info[2].capitalize()))
+	window.title("Aide")
+	window.resizable(height=False, width=False)
 	Grid.rowconfigure(window, 0, weight=1)
 	Grid.columnconfigure(window, 0, weight=1)
 	
-	Label(window, text="Aide aux fonctionnalités", font=['Ubuntu', 20]).grid(row=0, pady=20)
+	panel = [ttk.Notebook(window)]
+	panel[0].grid()
 	
-	article = [Frame(window), Frame(window)]
+	page = []
+	for i in range(0, 3):
+		page.append(Frame(panel[0], width=600, height=300))
 	
-	article[0].grid(row=1, padx=20, pady=10, sticky=E+W)
-	Label(article[0], text="Commande :", font=['Ubuntu', 14]).grid(row=0, pady=10, sticky=W)
+	article = [Frame(page[0]), Frame(page[0])]
+	for i in range(0, len(article)):
+		article[i].grid(row=i, column=0, sticky=W)
+	
+	Label(article[0], text="Commandes :", font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
 	madeLabel(article[0], [
 		"START\t : Démarre le service concerné",
 		"STOP\t : Arrête le service concerné",
 		"RESTART\t : Redémarre le service concerné\n",
-		"CONFIG\t : Modifie le fichier de configuration du service concerné avec l'éditeur de texte local"
+		"CONFIG\t : Modifie le fichier de configuration du service concerné avec l'éditeur de l'app\n"
 	], ['Ubuntu light', 10])
 	
-	article[1].grid(row=2, padx=20, pady=10, sticky=E+W)
-	Label(article[1], text="Lancement :", font=['Ubuntu', 14]).grid(row=0, pady=10, sticky=W)
-	madeLabel(article[1], helpArg, ['Monospace', 9])
+	Label(article[1], text="Autres :", font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
+	madeLabel(article[1], [
+		"Terminal\t\t : Ouvre un shell",
+		"Lister les Projets\t : Liste les projets présent dans le répertoire /var/www/html\n"
+	], ['Ubuntu light', 10])
+	
+	Label(page[1], text="Lancement :", font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
+	madeLabel(page[1], helpArg, ['Monospace', 9])
+	
+	for i, txt in enumerate(['Commandes', 'Lancement']):
+		panel[0].add(page[i], text=txt)
+	
+	Button(window, text="Fermer", font=["Ubuntu", 10], command=window.destroy).grid(row=1, column=0)
 	
 	window.mainloop()
 	window.quit()
@@ -307,7 +330,7 @@ def main():
 			skin = False
 			ground = ["#333333", "#CCCCCC", "#444444", "#CCCCCC"]
 		
-		window.config(bg=ground[0])
+		root.config(bg=ground[0])
 		menubar.config(bg=ground[0], fg=ground[1], activebackground=ground[2], activeforeground=ground[1])
 		for i in range(0, len(menuContent)): menuContent[i][1].config(bg=ground[0], fg=ground[1], activebackground=ground[2], activeforeground=ground[1])
 		for i in range(0, len(panel)):
@@ -323,20 +346,20 @@ def main():
 	global button, btn, label, lbl, step
 	print("{}> {}Initializing IHM{}_".format(info[2], color.GREEN, color.END))
 	
-	window = Tk()
-	window.title(info[2].capitalize())
-	window.resizable(width=FALSE, height=FALSE)
+	root = Tk()
+	root.title(info[2].capitalize())
+	root.resizable(width=FALSE, height=FALSE)
 	
 	step = StringVar()
 	
 	""" Menu """
-	menubar = Menu(window, bd=0)
+	menubar = Menu(root, bd=0)
 	
 	menuContent = [ # Contenu des Menus
 		[ # Menu Principale
 			'Fichier', Menu(menubar, tearoff=0),
 			['Terminal', 'Quitter'],
-			[lambda:shell(), window.quit]
+			[lambda:shell(), root.quit]
 		],
 		[ # Menu Apache2
 			'Serveur', Menu(menubar, tearoff=0),
@@ -366,12 +389,12 @@ def main():
 	for i in range(0, len(menuContent)):
 		for j, txt in enumerate(menuContent[i][2]):
 			menuContent[i][1].add_command(label=txt, font=['Ubuntu Light', 10], command=menuContent[i][3][j])
-			sep = [ # Contrôleur des séparateurs du menu
-				(not i) and (not j),                                         # Fichier
-				(i == 1) and (j in [2, 3, 5]),                               # Serveur
-				(i == 2) and (j == 2),                                       # Base de Données
-				tor and (i == 3) and (j in [2, 3]),                          # Tor
-				(((not tor) and (i == 3)) or (tor and (i == 4))) and (not j) # Plus
+			sep = [ # Contrôleur de séparateurs des menu
+				(not i) and (not j),						# Fichier
+				(i == 1) and (j in [2, 3, 5]),					# Serveur
+				(i == 2) and (j == 2),						# Base de Données
+				tor and (i == 3) and (j in [2, 3]),				# Tor
+				(((not tor) and (i == 3)) or (tor and (i == 4))) and (not j)	# Plus
 			]
 			if(True in sep): menuContent[i][1].add_separator()
 		
@@ -380,15 +403,15 @@ def main():
 	
 	logo = PhotoImage(file="{}/assets/python.png".format(info[6]))
 	logo = logo.subsample(35)
-	btn.append(Button(window, image=logo, command=theme))
+	btn.append(Button(root, image=logo, command=theme))
 	btn[len(btn)-1].grid(row=0, column=0, ipadx=4, ipady=4, padx=(7, 0), pady=8, sticky=W)
-	lbl.append(Label(window, text=info[2].capitalize(), font=['Ubuntu', 20]))
+	lbl.append(Label(root, text=info[2].capitalize(), font=['Ubuntu', 20]))
 	lbl[len(lbl)-1].grid(row=0, column=0, columnspan=2, padx=(60, 0), pady=8, sticky=W)
 	
 	panel = [
-		LabelFrame(window, bd=1, relief=GROOVE, text=" General ", font=['Ubuntu Light', 12]),
-		Frame(window, bd=1, relief=GROOVE),
-		Frame(window)
+		LabelFrame(root, bd=1, relief=GROOVE, text=" General ", font=['Ubuntu Light', 12]),
+		Frame(root, bd=1, relief=GROOVE),
+		Frame(root)
 	]
 	
 	""" General Control COMMAND """
@@ -427,10 +450,10 @@ def main():
 	btn.append(Button(panel[2], text="Lister les Projets", font=['Ubuntu', 10], command=listProject))
 	btn[len(btn)-1].grid(row=0, column=1, padx=4)
 	""" ---------------------------------------------------------------------------------- """
-	btn.append(Button(window, text="Quitter", font=['Ubuntu', 10], command=window.quit))
+	btn.append(Button(root, text="Quitter", font=['Ubuntu', 10], command=root.quit))
 	btn[len(btn)-1].grid(row=2, column=1, padx=(0, 7), sticky=E)
 	
-	lbl.append(Label(window, textvariable=step, font=['Monospace', 8]))
+	lbl.append(Label(root, textvariable=step, font=['Monospace', 8]))
 	lbl[len(lbl)-1].grid(row=3, column=0, columnspan=2, padx=2, sticky=W)
 	
 	print("{}> {}Checking of services launched{}_".format(info[2], color.YELLOW, color.END))
@@ -446,20 +469,30 @@ def main():
 	step.set("Prêt")
 	if(tor): step.set("[ Mode Tor ]")
 	
-	window.config(menu=menubar)
-	window.mainloop()
-	window.quit()
+	root.config(menu=menubar)
+	root.mainloop()
+	root.quit()
 	
 	print("{}> {}Quitting{}_".format(info[2], color.RED, color.END))
 
 button, label, subpanel, btn, lbl = [], [], [], [], []
 info = [
 	['10 avr 2017', '16 fev 2019'],
-	"Anarchy", "service.py", "v_0.0.8-a",
+	"Anarchy", "service.py", "0.0.8-a",
 	"https://tracks12.github.io/service.py/",
 	"Python {}.{}.{}".format(sys.version_info[0], sys.version_info[1], sys.version_info[2]),
 	os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 ]
+
+with open("{}/{}".format(info[6], info[2]), 'r') as size:
+	i, unit = 0, ['o', 'ko', 'Mo']
+	info.append(len(size.read()))
+	while(info[7] > 1000):
+		info[7] /= 1000.0
+		i += 1
+	
+	info[7] = "{} {}".format(info[7], unit[i])
+	size.close()
 
 arg, helpArg, aboutUs = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
@@ -481,8 +514,9 @@ arg, helpArg, aboutUs = [
 	"{}".format(color.BOLD+color.YELLOW+info[2].capitalize()+color.END),
 	"Running with {}\n".format(info[5]),
 	"Writed\t\t: {}".format(info[0][0]),
-	"Last Update\t: {}".format(info[0][1]),
-	"Version\t: {}\n".format(color.BOLD+color.RED+info[3]+color.END),
+	"Last Update\t: {}".format(color.BOLD+color.WHITE+info[0][1]+color.END),
+	"Version\t: {}".format(color.BOLD+color.RED+info[3]+color.END),
+	"Size\t\t: {}\n".format(info[7]),
 	"This program was writed in python",
 	"{}\n".format(color.YELLOW+info[4]+color.END),
 	"{}By {}\n".format(color.BOLD+color.PURPLE, info[1]+color.END)
@@ -491,7 +525,7 @@ arg, helpArg, aboutUs = [
 if(True in arg[0]):
 	for txt in helpArg: print(" {}".format(txt))
 elif(True in arg[1]): listProject()
-elif(True in arg[3]): print(" {}\n".format(color.BOLD+color.RED+info[3]+color.END))
+elif(True in arg[3]): print(" {} - Version {}\n".format(info[2].capitalize(), color.BOLD+color.RED+info[3]+color.END))
 elif(True in arg[4]):
 	for txt in aboutUs: print(" {}".format(txt))
 elif(True in arg[5]): verify()
@@ -515,7 +549,6 @@ else:
 			print("{}> {}Tor mod enabled{}_".format(info[2], color.YELLOW, color.END))
 		
 		if(verify()): main()
-		time.sleep(1)
 		print("Bye :)\n")
 
 """
