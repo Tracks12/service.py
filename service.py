@@ -461,10 +461,6 @@ info = [
 	os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 ]
 
-with open("{}/conf.json".format(info[6]), "r") as conf:
-	conf = json.load(conf)
-	prog, services, skin, tor = conf["prog"], conf["services"], conf["skin"], conf["tor"]
-
 arg, helpArg, aboutUs = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
 	["-l" in sys.argv, "--list" in sys.argv],
@@ -509,12 +505,17 @@ else:
 	else:
 		print("Launching with {}".format(info[5]))
 		splash()
+		print("{}> {}Load configuration file{}_".format(info[2], color.YELLOW, color.END))
+		with open("{}/conf.json".format(info[6]), "r") as conf:
+			conf = json.load(conf)
+			prog, services, skin, tor = conf["prog"], conf["services"], conf["skin"], conf["tor"]
 		if(True in arg[2] or tor):
 			tor = True
 			services.append(u'tor')
 			print("{}> {}Tor mod enabled{}_".format(info[2], color.YELLOW, color.END))
 		
 		if(verify()): main()
+		time.sleep(1)
 		print("Bye :)\n")
 
 """
