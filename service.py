@@ -168,8 +168,8 @@ def listProject():
 
 def edit(serv):
 	def save():
-		with open(path, "w") as conf:
-			conf.write(area.get("1.0", END))
+		with open(path, "w") as config:
+			config.write(area.get("1.0", END))
 		
 		check('Modification de {}'.format(msg[1]))
 		window.destroy()
@@ -240,8 +240,6 @@ def shell():
 	window = Tk()
 	window.title("{} Shell".format(info[2].capitalize()))
 	window.resizable(height=False, width=False)
-	#Grid.rowconfigure(window, 0, weight=1)
-	#Grid.columnconfigure(window, 0, weight=1)
 	
 	panel = [Frame(window, height=330, width=560)]
 	panel[0].grid(sticky="news")
@@ -322,7 +320,7 @@ def main():
 			for j in range(0, len(button[i])):
 				button[i][j].config(bg=ground[0], fg=ground[1], activebackground=ground[2], activeforeground=ground[1])
 	
-	global button, label, step
+	global button, btn, label, lbl, step
 	print("{}> {}Initializing IHM{}_".format(info[2], color.GREEN, color.END))
 	
 	window = Tk()
@@ -334,7 +332,7 @@ def main():
 	""" Menu """
 	menubar = Menu(window, bd=0)
 	
-	menuContent = [
+	menuContent = [ # Contenu des Menus
 		[ # Menu Principale
 			'Fichier', Menu(menubar, tearoff=0),
 			['Terminal', 'Quitter'],
@@ -475,31 +473,31 @@ arg, helpArg, aboutUs = [
 	["-a" in sys.argv, "--about" in sys.argv],
 	["-c" in sys.argv, "--check" in sys.argv]
 ], [
-	" python {}\n".format(info[2]),
-	" Option         Option longue GNU       Description",
-	" -a             --about                 A propos du soft",
-	" -c             --check                 Vérifie l'existance des services Web",
-	" -h, -?         --help                  Affiche ce message",
-	" -l             --list                  Liste tous le repertoire du serveur",
-	" -t             --tor                   Lancement en mod Tor",
-	" -v             --version               Affiche la version du soft\n"
+	"python {}\n".format(info[2]),
+	"Option         Option longue GNU       Description",
+	"-a             --about                 A propos du soft",
+	"-c             --check                 Vérifie l'existance des services Web",
+	"-h, -?         --help                  Affiche ce message",
+	"-l             --list                  Liste tous le repertoire du serveur",
+	"-t             --tor                   Lancement en mod Tor",
+	"-v             --version               Affiche la version du soft\n"
 ], [
-	" {}".format(color.BOLD+color.YELLOW+info[2].capitalize()+color.END),
-	" Running with {}".format(info[5]),
-	"\n Writed\t\t: {}".format(info[0][0]),
-	" Last Update\t: {}".format(info[0][1]),
-	" Version\t: {}".format(color.BOLD+color.RED+info[3]+color.END),
-	"\n This program was writed in python",
-	" {}".format(color.YELLOW+info[4]+color.END),
-	"\n {}By {}\n".format(color.BOLD+color.PURPLE, info[1]+color.END)
+	"{}".format(color.BOLD+color.YELLOW+info[2].capitalize()+color.END),
+	"Running with {}\n".format(info[5]),
+	"Writed\t\t: {}".format(info[0][0]),
+	"Last Update\t: {}".format(info[0][1]),
+	"Version\t: {}\n".format(color.BOLD+color.RED+info[3]+color.END),
+	"This program was writed in python",
+	"{}\n".format(color.YELLOW+info[4]+color.END),
+	"{}By {}\n".format(color.BOLD+color.PURPLE, info[1]+color.END)
 ]
 
 if(True in arg[0]):
-	for txt in helpArg: print(txt)
+	for txt in helpArg: print(" {}".format(txt))
 elif(True in arg[1]): listProject()
 elif(True in arg[3]): print(" {}\n".format(color.BOLD+color.RED+info[3]+color.END))
 elif(True in arg[4]):
-	for txt in aboutUs: print(txt)
+	for txt in aboutUs: print(" {}".format(txt))
 elif(True in arg[5]): verify()
 else:
 	if(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating system wasn't support\n".format(color.BOLD+color.RED, color.END))
