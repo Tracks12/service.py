@@ -11,25 +11,14 @@
 """
 
 import inspect, json, os, platform, sys, time
+from core.color import *
+
 try:	# Python 2
 	import ttk
 	from Tkinter import *
 except:	# Python 3
 	import tkinter.ttk as ttk
 	from tkinter import *
-
-class color:
-	BOLD	= '\033[1m'
-	ITALIC	= '\033[3m'
-	
-	RED	= '\033[31m'
-	GREEN	= '\033[32m'
-	BLUE	= '\033[34m'
-	YELLOW	= '\033[33m'
-	PURPLE	= '\033[35m'
-	WHITE	= '\033[37m'
-	
-	END	= '\033[0m'
 
 def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
