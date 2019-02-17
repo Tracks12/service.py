@@ -11,14 +11,16 @@
 """
 
 import inspect, json, os, platform, sys, time
-from core.color import *
+from core.color import color
 
 try:	# Python 2
 	import ttk
 	from Tkinter import *
+	from core.secure2 import authentic
 except:	# Python 3
 	import tkinter.ttk as ttk
 	from tkinter import *
+	from core.secure3 import authentic
 
 def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
@@ -91,9 +93,11 @@ def verify():
 
 def splash():
 	time.sleep(.5)
+	auth = ""
+	if(not authentic(info)): auth = "[ {}NOT AUTHENTIC{} ]".format(color.RED, color.END)
 	screen = [
 		"\n{}     ____               O             ___".format(color.BOLD+color.YELLOW),
-		"    | ___|----.---,-.--.-.----.----. | _ \_ __",
+		"    | ___|----.---,-.--.-.----.----. | _ \_ __\t{}".format(color.END+auth+color.BOLD+color.YELLOW),
 		"    |___ | -__| .-| |  | |  __| -__| | ,_/\` /",
 		"    |____|____|_| |___/|_|____|____|.|_|  / /\t{}".format(color.RED+info[3]),
 		"             {}Take a easier control       {}/_/\t{}By {}\n".format(color.BOLD+color.WHITE, color.BOLD+color.YELLOW, color.PURPLE, info[1]+color.END)
@@ -447,6 +451,7 @@ def main():
 	
 	step.set("Prêt")
 	if(tor): step.set("[ Mode Tor ]")
+	elif(not authentic(info)): step.set("[ Attention ] Cette appli est une copie !")
 	
 	root.config(menu=menubar)
 	root.mainloop()
@@ -520,6 +525,9 @@ elif(True in arg[1]): listProject()
 elif(True in arg[3]): print(" {} - Version {}\n".format(info[2].capitalize(), color.BOLD+color.RED+info[3]+color.END))
 elif(True in arg[4]):
 	for txt in aboutUs: print(" {}".format(txt))
+	if(not authentic(info)):
+		print(" [ {}WARN{} ] - This app wasn't authentic !\n".format(color.RED, color.END))
+		time.sleep(3)
 elif(True in arg[5]): verify()
 else:
 	if(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating system wasn't support\n".format(color.BOLD+color.RED, color.END))
