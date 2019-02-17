@@ -1,5 +1,5 @@
 {
-	"font" : "sans-serif",
+	"font" : "Ubuntu",
 	"prog" : "python",
 	"services" : [
 		"apache2",
