@@ -137,7 +137,7 @@ def listProject():
 		i += 1
 		
 		try:
-			with open(path, "r") as content:
+			with open(path, 'r') as content:
 				ba = [0, len(content.read()), ""]
 				content.close()
 				
@@ -161,7 +161,7 @@ def listProject():
 
 def edit(serv):
 	def save():
-		with open(path, "w") as config:
+		with open(path, 'w') as config:
 			config.write(area.get("1.0", END))
 		
 		check('Modification de {}'.format(msg[1]))
@@ -173,7 +173,7 @@ def edit(serv):
 	
 	path = "/etc/{}/{}".format(serv, msg[1])
 	print("{}> {}Editing {} configuration file{}_".format(info[2], color.YELLOW, msg[0], color.END))
-	with open(path, "r") as content:
+	with open(path, 'r') as content:
 		content = content.read()
 	
 	window = Tk()
@@ -202,7 +202,7 @@ def viewLog(serv, log):
 	
 	print("{}> {}Show {} {} file{}_".format(info[2], color.YELLOW, serv, log, color.END))
 	step.set("Affichage du fichier {} {}".format(serv, log))
-	with open("/var/log/{}/{}".format(serv, log), "r") as content:
+	with open("/var/log/{}/{}".format(serv, log), 'r') as content:
 		content = content.read()
 	
 	window = Tk()
@@ -283,25 +283,15 @@ def helper():
 	for i in range(0, len(article)):
 		article[i].grid(row=i, column=0, sticky=W)
 	
-	Label(article[0], text="Commandes :", font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
-	madeLabel(article[0], [
-		"START\t : Démarre le service concerné",
-		"STOP\t : Arrête le service concerné",
-		"RESTART\t : Redémarre le service concerné\n",
-		"CONFIG\t : Modifie le fichier de configuration du service concerné avec l'éditeur de l'app\n"
-	], ['Ubuntu light', 10])
+	for i, txt in enumerate(['commandes', 'autres']):
+		Label(article[i], text="{} :".format(txt.capitalize()), font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
+		madeLabel(article[i], help["com"][i], ['Ubuntu light', 10])
 	
-	Label(article[1], text="Autres :", font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
-	madeLabel(article[1], [
-		"Terminal\t\t : Ouvre un shell",
-		"Lister les Projets\t : Liste les projets présent dans le répertoire /var/www/html\n"
-	], ['Ubuntu light', 10])
+	Label(page[1], text="lancement :".capitalize(), font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
+	madeLabel(page[1], help["arg"], ['Monospace', 9])
 	
-	Label(page[1], text="Lancement :", font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
-	madeLabel(page[1], helpArg, ['Monospace', 9])
-	
-	for i, txt in enumerate(['Commandes', 'Lancement']):
-		panel[0].add(page[i], text=txt)
+	for i, txt in enumerate(['commandes', 'lancement']):
+		panel[0].add(page[i], text=txt.capitalize())
 	
 	Button(window, text="Fermer", font=["Ubuntu", 10], command=window.destroy).grid(row=1, column=0)
 	
@@ -483,22 +473,13 @@ with open("{}/{}".format(info[6], info[2]), 'r') as size:
 	info[7] = "{} {}".format(info[7], unit[i])
 	size.close()
 
-arg, helpArg, aboutUs = [
+arg, aboutUs, help = [
 	["-h" in sys.argv, "-?" in sys.argv, "--help" in sys.argv],
 	["-l" in sys.argv, "--list" in sys.argv],
 	["-t" in sys.argv, "--tor" in sys.argv],
 	["-v" in sys.argv, "--version" in sys.argv],
 	["-a" in sys.argv, "--about" in sys.argv],
 	["-c" in sys.argv, "--check" in sys.argv]
-], [
-	"python {}\n".format(info[2]),
-	"Option         Option longue GNU       Description",
-	"-a             --about                 A propos du soft",
-	"-c             --check                 Vérifie l'existance des services Web",
-	"-h, -?         --help                  Affiche ce message",
-	"-l             --list                  Liste tous le repertoire du serveur",
-	"-t             --tor                   Lancement en mod Tor",
-	"-v             --version               Affiche la version du soft\n"
 ], [
 	"{}".format(color.BOLD+color.YELLOW+info[2].capitalize()+color.END),
 	"Running with {}\n".format(info[5]),
@@ -509,10 +490,32 @@ arg, helpArg, aboutUs = [
 	"This program was writed in python",
 	"{}\n".format(color.YELLOW+info[4]+color.END),
 	"{}By {}\n".format(color.BOLD+color.PURPLE, info[1]+color.END)
-]
+], {
+	"arg": [
+		"python {}\n".format(info[2]),
+		"Option\t\tOption longue GNU\tDescription",
+		"-a\t\t--about\t\t\tA propos du soft",
+		"-c\t\t--check\t\t\tVérifie l'existance des services Web",
+		"-h, -?\t\t--help\t\t\tAffiche ce message",
+		"-l\t\t--list\t\t\tListe tous le repertoire du serveur",
+		"-t\t\t--tor\t\t\tLancement en mod Tor",
+		"-v\t\t--version\t\tAffiche la version du soft\n"
+	],
+	"com": [
+		[
+			"START\t: Démarre le service concerné",
+			"STOP\t: Arrête le service concerné",
+			"RESTART\t: Redémarre le service concerné\n",
+			"CONFIG\t: Modifie le fichier de configuration du service concerné avec l'éditeur de l'app\n"
+		], [
+			"Terminal\t\t: Ouvre un shell",
+			"Lister les Projets\t: Liste les projets présent dans le répertoire /var/www/html\n"
+		]
+	]
+}
 
 if(True in arg[0]):
-	for txt in helpArg: print(" {}".format(txt))
+	for txt in help["arg"]: print(" {}".format(txt))
 elif(True in arg[1]): listProject()
 elif(True in arg[3]): print(" {} - Version {}\n".format(info[2].capitalize(), color.BOLD+color.RED+info[3]+color.END))
 elif(True in arg[4]):
@@ -528,7 +531,7 @@ else:
 	else:
 		print("Launching with {}".format(info[5]))
 		splash()
-		print("{}> {}Load configuration file{}_".format(info[2], color.YELLOW, color.END))
+		print("{}> {}Loading configuration file{}_".format(info[2], color.YELLOW, color.END))
 		with open("{}/conf.json".format(info[6]), "r") as conf:
 			conf = json.load(conf)
 			prog, services, skin, tor = conf["prog"], conf["services"], conf["skin"], conf["tor"]
