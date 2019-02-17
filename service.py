@@ -524,10 +524,12 @@ elif(True in arg[5]): verify()
 else:
 	if(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating system wasn't support\n".format(color.BOLD+color.RED, color.END))
 	elif(os.environ["USER"] != "root"):
+		argv = ""
 		sys.argv.append("")
 		if(sys.version_info[0] == 2): prog = "python2"
 		elif(sys.version_info[0] == 3): prog = "python3"
-		os.system("sudo {} {}/{} {}".format(prog, info[6], info[2], sys.argv[1]))
+		for txt in sys.argv: argv += " {}".format(txt)
+		os.system("sudo {} {}/{} {}".format(prog, info[6], info[2], argv))
 	else:
 		print("Launching with {}".format(info[5]))
 		splash()
