@@ -3,7 +3,7 @@
 
 """
 	----------------------
-	 Author  : Anarchy
+	 Author   : Anarchy
 	 Date    : 16/02/2019
 	 Name    : service.py
 	 Version : 0.0.8-a
@@ -30,13 +30,13 @@ def madePanel(panel, panelName, r, act):
 		button.append([])
 		
 		for i, txt in enumerate(['START', 'RESTART', 'CONFIG']):
-			button[r].append(Button(panel, text=txt, font=['Ubuntu', 9], command=act[i], width=8, state=NORMAL))
+			button[r].append(Button(panel, text=txt, font=[xfont, 9], command=act[i], width=8, state=NORMAL))
 			button[r][i].grid(row=i+1, column=0, padx=6, pady=4, sticky=W)
 	
-	subpanel.append(LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['Ubuntu Light', 12]))
+	subpanel.append(LabelFrame(panel, bd=1, relief=GROOVE, text=panelName, font=['{} Light'.format(xfont), 12]))
 	subpanel[len(subpanel)-1].grid(row=1, column=r, padx=8, pady=8)
 	
-	label.append(Label(subpanel[len(subpanel)-1], text='ARRÊTER', font=["Ubuntu", 10], bg="#AA0000", fg="#000000", height=2, width=10))
+	label.append(Label(subpanel[len(subpanel)-1], text='ARRÊTER', font=[xfont, 10], bg="#AA0000", fg="#000000", height=2, width=10))
 	label[r].grid(row=0, column=0, padx=6, pady=4)
 	madeButton(subpanel[len(subpanel)-1], act, r)
 
@@ -45,7 +45,7 @@ def serv(s, x):
 	
 	if(s == 'apache2'): msg = ['Serveur Apache', 0]
 	elif(s == 'mysql'): msg = ['Base de données MySQL', 1]
-	elif(s == 'tor'): msg = ['Service Tor', 2]
+	elif(tor and (s == 'tor')): msg = ['Service Tor', 2]
 	
 	if(x in [1, 2]):
 		if(x == 1): line = ['start', '{} lancer'.format(msg[0])]
@@ -124,13 +124,13 @@ def listProject():
 	window.title("Liste des Projets")
 	window.resizable(height=False, width=False)
 	
-	Label(window, text="{}/".format(prop[0]), font=["Ubuntu", 18]).grid(row=0, padx=15, pady=10, sticky=W)
+	Label(window, text="{}/".format(prop[0]), font=[xfont, 18]).grid(row=0, padx=15, pady=10, sticky=W)
 	
 	panel = [Frame(window)]
 	panel[0].grid(row=1, column=0, pady=10)
 	
 	for i, txt in enumerate(['*', 'Name', 'Size', 'Type', 'Dernière MàJ']):
-		Label(panel[0], text=txt, font=["Ubuntu", 10]).grid(row=0, column=i, padx=15)
+		Label(panel[0], text=txt, font=[xfont, 10]).grid(row=0, column=i, padx=15)
 	
 	for i, txt in enumerate(os.listdir(prop[0])):
 		path = "{}/{}".format(prop[0], txt)
@@ -152,9 +152,9 @@ def listProject():
 	scroll = Scrollbar(panel[0])
 	scroll.grid(row=1, column=5, rowspan=i, sticky=NS)
 	
-	Label(window, text="{} Elements Trouvés".format(i), font=["Ubuntu Light", 8]).grid(row=2, column=0, padx=5, pady=2, sticky=E)
+	Label(window, text="{} Elements Trouvés".format(i), font=['{} Light'.format(xfont), 8]).grid(row=2, column=0, padx=5, pady=2, sticky=E)
 	print(" [ {}INFO{} ] - {} Elements found !\n".format(color.BLUE, color.END, i))
-	Button(window, text="Fermer", font=["Ubuntu", 10], command=window.destroy).grid(row=2, column=0)
+	Button(window, text="Fermer", font=[xfont, 10], command=window.destroy).grid(row=2, column=0)
 	
 	window.mainloop()
 	window.quit()
@@ -169,7 +169,7 @@ def edit(serv):
 	
 	if(serv == 'apache2'): msg = ['Apache2', 'apache2.conf']
 	elif(serv == 'mysql'): msg = ['MySQL', 'my.cnf']
-	elif(serv == 'tor'): msg = ['Tor', 'torsocks.conf']
+	elif(tor and (serv == 'tor')): msg = ['Tor', 'torsocks.conf']
 	
 	path = "/etc/{}/{}".format(serv, msg[1])
 	print("{}> {}Editing {} configuration file{}_".format(info[2], color.YELLOW, msg[0], color.END))
@@ -191,8 +191,8 @@ def edit(serv):
 	area.config(yscrollcommand=scroll.set)
 	scroll.config(command=area.yview)
 	
-	Button(window, text="Enregistrer", font=["Ubuntu", 10], command=lambda:save()).grid(row=1, column=0, sticky=E)
-	Button(window, text="Fermer", font=["Ubuntu", 10], command=window.destroy).grid(row=1, column=0, sticky=W)
+	Button(window, text="Enregistrer", font=[xfont, 10], command=lambda:save()).grid(row=1, column=0, sticky=E)
+	Button(window, text="Fermer", font=[xfont, 10], command=window.destroy).grid(row=1, column=0, sticky=W)
 	
 	window.mainloop()
 	window.quit()
@@ -220,7 +220,7 @@ def viewLog(serv, log):
 	area.config(yscrollcommand=scroll.set)
 	scroll.config(command=area.yview)
 	
-	Button(window, text="Fermer", font=["Ubuntu", 10], command=window.destroy).grid(row=1, column=0)
+	Button(window, text="Fermer", font=[xfont, 10], command=window.destroy).grid(row=1, column=0)
 	
 	window.mainloop()
 	window.quit()
@@ -245,11 +245,11 @@ def about():
 	print("{}> {}Show more info{}_".format(info[2], color.YELLOW, color.END))
 	window = Tk()
 	window.title("A propos")
-	window.resizable(width=FALSE, height=FALSE)
+	window.resizable(width=False, height=False)
 	
-	panel = [Frame(window, bd=0)]
-	panel[0].grid(row=0, column=0, padx=10, pady=(30, 20))
-	Label(panel[0], text=info[2].capitalize(), font=['Ubuntu', 20]).grid(row=0, padx=(8, 0), pady=(0, 10), sticky=W)
+	panel = [Frame(window)]
+	panel[0].grid(row=0, padx=10, pady=20)
+	Label(panel[0], text=info[2].capitalize(), font=[xfont, 20]).grid(row=0, padx=(8, 0), pady=(0, 10), sticky=W)
 	madeLabel(panel[0], [
 		"Lancer avec {}\n".format(info[5]),
 		"Ecrit le\t\t: {}".format(info[0][0]),
@@ -258,8 +258,8 @@ def about():
 		"Taille\t\t: {}\n".format(info[7]),
 		"Ce programme a été écrit en python",
 		info[4]
-	], ['Ubuntu', 11])
-	Label(window, text="By {}".format(info[1]), font=['Ubuntu', 9]).grid(row=1, pady=5)
+	], ['{} Light'.format(xfont), 11])
+	Label(window, text="By {}".format(info[1]), font=[xfont, 9]).grid(row=8, pady=(0, 5))
 	
 	window.mainloop()
 	window.quit()
@@ -273,7 +273,7 @@ def helper():
 	Grid.columnconfigure(window, 0, weight=1)
 	
 	panel = [ttk.Notebook(window)]
-	panel[0].grid()
+	panel[0].grid(row=0, column=0)
 	
 	page = []
 	for i in range(0, 3):
@@ -284,16 +284,16 @@ def helper():
 		article[i].grid(row=i, column=0, sticky=W)
 	
 	for i, txt in enumerate(['commandes', 'autres']):
-		Label(article[i], text="{} :".format(txt.capitalize()), font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
+		Label(article[i], text="{} :".format(txt.capitalize()), font=[xfont, 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
 		madeLabel(article[i], help["com"][i], ['Ubuntu light', 10])
 	
-	Label(page[1], text="lancement :".capitalize(), font=['Ubuntu', 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
+	Label(page[1], text="lancement :".capitalize(), font=[xfont, 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
 	madeLabel(page[1], help["arg"], ['Monospace', 9])
 	
 	for i, txt in enumerate(['commandes', 'lancement']):
 		panel[0].add(page[i], text=txt.capitalize())
 	
-	Button(window, text="Fermer", font=["Ubuntu", 10], command=window.destroy).grid(row=1, column=0)
+	Button(window, text="Fermer", font=[xfont, 10], command=window.destroy).grid(row=1, column=0)
 	
 	window.mainloop()
 	window.quit()
@@ -367,7 +367,7 @@ def main():
 	
 	for i in range(0, len(menuContent)):
 		for j, txt in enumerate(menuContent[i][2]):
-			menuContent[i][1].add_command(label=txt, font=['Ubuntu Light', 10], command=menuContent[i][3][j])
+			menuContent[i][1].add_command(label=txt, font=['{} Light'.format(xfont), 10], command=menuContent[i][3][j])
 			sep = [ # Contrôleur de séparateurs des menu
 				(not i) and (not j),						# Fichier
 				(i == 1) and (j in [2, 3, 5]),					# Serveur
@@ -377,18 +377,18 @@ def main():
 			]
 			if(True in sep): menuContent[i][1].add_separator()
 		
-		menubar.add_cascade(label=menuContent[i][0], font=['Ubuntu Light', 10], menu=menuContent[i][1])
+		menubar.add_cascade(label=menuContent[i][0], font=['{} Light'.format(xfont), 10], menu=menuContent[i][1])
 	""" ---------------------------------------------------------------------------------- """
 	
 	logo = PhotoImage(file="{}/assets/python.png".format(info[6]))
 	logo = logo.subsample(35)
 	btn.append(Button(root, image=logo, command=theme))
 	btn[len(btn)-1].grid(row=0, column=0, ipadx=4, ipady=4, padx=(7, 0), pady=8, sticky=W)
-	lbl.append(Label(root, text=info[2].capitalize(), font=['Ubuntu', 20]))
+	lbl.append(Label(root, text=info[2].capitalize(), font=[xfont, 20]))
 	lbl[len(lbl)-1].grid(row=0, column=0, columnspan=2, padx=(60, 0), pady=8, sticky=W)
 	
 	panel = [
-		LabelFrame(root, bd=1, relief=GROOVE, text=" General ", font=['Ubuntu Light', 12]),
+		LabelFrame(root, bd=1, relief=GROOVE, text=" General ", font=['{} Light'.format(xfont), 12]),
 		Frame(root, bd=1, relief=GROOVE),
 		Frame(root)
 	]
@@ -398,7 +398,7 @@ def main():
 	panelBtn = [lambda:servAll(1), lambda:servAll(0), lambda:servAll(2)]
 	
 	for i, txt in enumerate(['START', 'STOP', 'RESTART']):
-		btn.append(Button(panel[0], text=txt, font=['Ubuntu', 9], command=panelBtn[i], width=8))
+		btn.append(Button(panel[0], text=txt, font=[xfont, 9], command=panelBtn[i], width=8))
 		btn[len(btn)-1].grid(row=i, column=0, padx=6, pady=4)
 	""" ---------------------------------------------------------------------------------- """
 	
@@ -424,12 +424,12 @@ def main():
 	""" Anex Panel """
 	panel[2].grid(row=2, column=0, columnspan=2, padx=(3, 0), pady=6, sticky=W+E)
 	
-	btn.append(Button(panel[2], text="Terminal", font=['Ubuntu', 10], command=lambda:shell()))
+	btn.append(Button(panel[2], text="Terminal", font=[xfont, 10], command=lambda:shell()))
 	btn[len(btn)-1].grid(row=0, column=0, padx=4)
-	btn.append(Button(panel[2], text="Lister les Projets", font=['Ubuntu', 10], command=listProject))
+	btn.append(Button(panel[2], text="Lister les Projets", font=[xfont, 10], command=listProject))
 	btn[len(btn)-1].grid(row=0, column=1, padx=4)
 	""" ---------------------------------------------------------------------------------- """
-	btn.append(Button(root, text="Quitter", font=['Ubuntu', 10], command=root.quit))
+	btn.append(Button(root, text="Quitter", font=[xfont, 10], command=root.quit))
 	btn[len(btn)-1].grid(row=2, column=1, padx=(0, 7), sticky=E)
 	
 	lbl.append(Label(root, textvariable=step, font=['Monospace', 8]))
@@ -536,7 +536,7 @@ else:
 		print("{}> {}Loading configuration file{}_".format(info[2], color.YELLOW, color.END))
 		with open("{}/conf.json".format(info[6]), "r") as conf:
 			conf = json.load(conf)
-			prog, services, skin, tor = conf["prog"], conf["services"], conf["skin"], conf["tor"]
+			xfont, prog, services, skin, tor = conf['font'], conf['prog'], conf['services'], conf['skin'], conf['tor']
 		if(True in arg[2] or tor):
 			tor = True
 			services.append(u'tor')
