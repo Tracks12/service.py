@@ -121,7 +121,9 @@ def listProject():
 	]
 	
 	print("{}> {}Listing Project in{} {}_".format(info[2], color.YELLOW, color.END, color.ITALIC+prop[0]+color.END))
-	try: step.set("Analyse du répertoire de projets {}".format(prop[0]))
+	try:
+		xfont = conf['font']
+		step.set("Analyse du répertoire de projets {}".format(prop[0]))
 	except: xfont = 'Ubuntu'
 	
 	window = Tk()
