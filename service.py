@@ -118,7 +118,7 @@ def listProject():
 	
 	print("{}> {}Listing Project in{} {}_".format(info[2], color.YELLOW, color.END, color.ITALIC+prop[0]+color.END))
 	try: step.set("Analyse du répertoire de projets {}".format(prop[0]))
-	except: """  """
+	except: xfont = 'Ubuntu'
 	
 	window = Tk()
 	window.title("Liste des Projets")
@@ -456,7 +456,7 @@ def main():
 
 button, label, subpanel, btn, lbl = [], [], [], [], []
 info = [
-	['10 avr 2017', '16 fev 2019'],
+	["10 avr 2017", "17 fev 2019"],
 	"Anarchy", "service.py", "0.0.8-a",
 	"https://tracks12.github.io/service.py/",
 	"Python {}.{}.{}".format(sys.version_info[0], sys.version_info[1], sys.version_info[2]),
