@@ -35,9 +35,9 @@ class color:
 		END        = '\033[0m'
 	
 	else:
-		BOLD = ITALIC = ''
+		BOLD = ITALIC = END = ''
 		GRAY = RED = GREEN = YELLOW = BLUE = PURPLE = CYAN = WHITE = CRIMSON = ''
-		RED_HL = GREEN_HL = BROWN_HL = BLUE_HL = PURPLE_HL = CYAN_HL = GRAY_HL = WHITE_HL = END = ''
+		RED_HL = GREEN_HL = BROWN_HL = BLUE_HL = PURPLE_HL = CYAN_HL = GRAY_HL = WHITE_HL = ''
 
 """
 	-----
