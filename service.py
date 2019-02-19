@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from encodings import utf_8
 
 """
 	----------------------
 	 Author   : Anarchy
-	 Date    : 17/02/2019
+	 Date    : 18/02/2019
 	 Name    : service.py
 	 Version : 0.0.8-a
 	----------------------
@@ -291,7 +292,7 @@ def helper():
 	
 	for i, txt in enumerate(['commandes', 'autres']):
 		Label(article[i], text="{} :".format(txt.capitalize()), font=[xfont, 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
-		madeLabel(article[i], help["com"][i], ['Ubuntu light', 10])
+		madeLabel(article[i], help["com"][i], ['{} light'.format(xfont), 10])
 	
 	Label(page[1], text="lancement :".capitalize(), font=[xfont, 18]).grid(row=0, padx=(16, 0), pady=10, sticky=W)
 	madeLabel(page[1], help["arg"], ['Monospace', 9])
@@ -544,7 +545,7 @@ else:
 		print("Launching with {}".format(info[5]))
 		splash()
 		print("{}> {}Loading configuration file{}_".format(info[2], color.YELLOW, color.END))
-		with open("{}/conf.json".format(info[6]), "r") as conf:
+		with open("{}/conf.json".format(info[6]), 'r') as conf:
 			conf = json.load(conf)
 			xfont, prog, services, skin, tor = conf['font'], conf['prog'], conf['services'], conf['skin'], conf['tor']
 		if(True in arg[2] or tor):
