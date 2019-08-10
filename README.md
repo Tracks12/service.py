@@ -66,3 +66,7 @@ Si jamais vous auriez besoin de faire plus que l'app vous propose, vous pouvez a
   <li><a href="https://github.com/Tracks12/service.py/archive/0.0.7-a.zip">Code Source zip</a></li>
   <li><a href="https://github.com/Tracks12/service.py/archive/0.0.7-a.tar.gz">Code Source tar.gz</a></li>
 </ul>
+
+
+# License
+Code sous license <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU License</a>
