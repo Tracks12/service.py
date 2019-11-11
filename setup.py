@@ -70,16 +70,19 @@ app = [
 
 confirm = raw_input("\n>>> Confirm ? [Y/n] ")
 if(confirm in ['Y', 'y']):
-	setup(
-		name = "service.exe",
-		version = "0.0.8-a",
-		description = "Outils d'interface d'accès aux Services Web Linux",
-		author = "Anarchy",
-		options = { "build_exe": options },
-		executables = [app[0]]
-	)
+	try:
+		setup(
+			name = "service.exe",
+			version = "0.0.8-a",
+			description = "Outils d'interface d'accès aux Services Web Linux",
+			author = "Anarchy",
+			options = { "build_exe": options },
+			executables = [app[0]]
+		)
 
-	print(" [ INFO ] - Compilation Finished\n")
+		print(" [ INFO ] - Compilation Success\n")
+	except:
+		print(" [ INFO ] - Compilation Failed\n")
 else:
 	print(" [ INFO ] - Compilation Aborted\n")
 
