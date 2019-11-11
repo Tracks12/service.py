@@ -4,24 +4,23 @@ from encodings import utf_8
 
 """
 	----------------------
-	 Author   : Anarchy
+	 Author  : Anarchy
 	 Date    : 18/02/2019
 	 Name    : service.py
-	 Version : 0.0.8-a
+	 Version : 0.0.9-a
 	----------------------
 """
 
 import inspect, json, os, platform, sys, time
 from core.color import color
+from core.secure import authentic
 
 try:	# Python 2
 	import ttk
 	from Tkinter import *
-	from core.secure2 import authentic
 except:	# Python 3
 	import tkinter.ttk as ttk
 	from tkinter import *
-	from core.secure3 import authentic
 
 def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
@@ -71,7 +70,6 @@ def servAll(x):
 def check(act):
 	global step
 	step.set(act)
-	print(" [ {}FINISHED{} ]".format(color.BOLD+color.GREEN, color.END))
 
 def verify():
 	checked, DIR, stop = [], os.listdir('/etc/init.d/'), False
@@ -185,7 +183,7 @@ def edit(serv):
 	
 	window = Tk()
 	window.title("Edition Configuration {}".format(msg[0]))
-	window.resizable(height=FALSE, width=FALSE)
+	window.resizable(height=False, width=False)
 	
 	panel = [Frame(window)]
 	panel[0].grid(row=0, column=0)
@@ -244,6 +242,34 @@ def shell():
 	panel = [Frame(window, height=330, width=560)]
 	panel[0].grid(sticky="news")
 	os.system("xterm -into {} -geometry 90x25 -sb &".format(panel[0].winfo_id()))
+	
+	window.mainloop()
+	window.quit()
+
+def settings():
+	print("{}> {}Opening settings_".format(info[2], color.YELLOW, color.END))
+	window = Tk()
+	window.title("Paramètres")
+	window.resizable(width=False, height=False)
+	Grid.rowconfigure(window, 0, weight=1)
+	Grid.columnconfigure(window, 0, weight=1)
+	
+	panel = [ttk.Notebook(window)]
+	panel[0].grid(row=0, column=0)
+	
+	page = []
+	for i in range(0, 3):
+		page.append(Frame(panel[0], width=600, height=300))
+	
+	article = [Frame(page[0]), Frame(page[0])]
+	for i in range(0, len(article)):
+		article[i].grid(row=i, column=0, sticky=W)
+	
+	for i, txt in enumerate(['démarrage', 'apparence']):
+		panel[0].add(page[i], text=txt.capitalize())
+	
+	Button(window, text="Appliquer", font=[xfont, 10]).grid(row=1, column=0, sticky=E)
+	Button(window, text="Fermer", font=[xfont, 10], command=window.destroy).grid(row=1, column=0, sticky=W)
 	
 	window.mainloop()
 	window.quit()
@@ -344,8 +370,8 @@ def main():
 	menuContent = [ # Contenu des Menus
 		[ # Menu Principale
 			'Fichier', Menu(menubar, tearoff=0),
-			['Terminal', 'Quitter'],
-			[lambda:shell(), root.quit]
+			['Terminal', 'Paramètres', 'Quitter'],
+			[lambda:shell(), lambda:settings(), root.quit]
 		],
 		[ # Menu Apache2
 			'Serveur', Menu(menubar, tearoff=0),
@@ -376,7 +402,7 @@ def main():
 		for j, txt in enumerate(menuContent[i][2]):
 			menuContent[i][1].add_command(label=txt, font=['{} Light'.format(xfont), 10], command=menuContent[i][3][j])
 			sep = [ # Contrôleur de séparateurs des menu
-				(not i) and (not j),						# Fichier
+				(not i) and (j == 1),						# Fichier
 				(i == 1) and (j in [2, 3, 5]),					# Serveur
 				(i == 2) and (j == 2),						# Base de Données
 				tor and (i == 3) and (j in [2, 3]),				# Tor
@@ -465,7 +491,7 @@ def main():
 button, label, subpanel, btn, lbl = [], [], [], [], []
 info = [
 	["10 avr 2017", "17 fev 2019"],
-	"Anarchy", "service.py", "0.0.8-a",
+	"Anarchy", "service.py", "0.0.9-a",
 	"https://tracks12.github.io/service.py/",
 	"Python {}.{}.{}".format(sys.version_info[0], sys.version_info[1], sys.version_info[2]),
 	os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
@@ -531,7 +557,11 @@ elif(True in arg[4]):
 	if(not authentic(info)):
 		print(" [ {}WARN{} ] - This app wasn't authentic !\n".format(color.RED, color.END))
 		time.sleep(3)
-elif(True in arg[5]): verify()
+elif(True in arg[5]):
+	with open("{}/conf.json".format(info[6]), 'r') as conf:
+		conf = json.load(conf)
+		services = conf['services']
+		verify()
 else:
 	if(platform.system() != "Linux"): print(" [ {}ERROR{} ] - Operating system wasn't support\n".format(color.BOLD+color.RED, color.END))
 	elif(os.environ["USER"] != "root"):
