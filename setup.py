@@ -78,7 +78,7 @@ if(confirm in ['Y', 'y']):
 		options = { "build_exe": options },
 		executables = [app[0]]
 	)
-	
+
 	print(" [ INFO ] - Compilation Finished\n")
 else:
 	print(" [ INFO ] - Compilation Aborted\n")
