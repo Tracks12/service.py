@@ -13,15 +13,15 @@ def authentic(inf):
 	truth = {
 		"author": "Anarchy",
 		"repository": "https://tracks12.github.io/service.py/",
-		"size": [20276, 20239]
+		"size": [21128, 21088]
 	}
-	
+
 	if(sys.version_info[0] == 2): x = 0
 	elif(sys.version_info[0] == 3): x = 1
-	
+
 	checking = True
 	if(inf[1] != truth['author']): checking = False
 	if(inf[4] != truth['repository']): checking = False
 	if(len(open("{}/{}".format(inf[6], inf[2]), 'r').read()) != truth['size'][x]): checking = False
-	
+
 	return checking
