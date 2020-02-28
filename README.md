@@ -10,23 +10,23 @@ Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant u
 <ul>
   <li>
     Lancement normal avec les commandes des services Apache2 et MySQL
-    <pre>:~# python service.py</pre>
+    <pre>:~$ python service.py</pre>
   </li>
   <li>
     Lancement en mode Tor ajoutant les commandes du service Tor si il est installer
-    <pre>:~# python service.py -t
-:~# python service.py --tor</pre>
+    <pre>:~$ python service.py -t
+:~$ python service.py --tor</pre>
   </li>
 </ul>
 
 ## Arguments :
 Syntax pour afficher la liste des arguments :
-<pre>:~# python service -h
-:~# python service -?
-:~# python service --help</pre>
+<pre>:~$ python service -h
+:~$ python service -?
+:~$ python service --help</pre>
 
 Liste des arguments :
-<pre> python service.py
+<pre>:~$ python service.py <args>
 
  Option         Option longue GNU       Description
  -a             --about                 A propos du soft
