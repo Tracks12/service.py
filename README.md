@@ -26,7 +26,7 @@ Syntax pour afficher la liste des arguments :
 :~$ python service --help</pre>
 
 Liste des arguments :
-<pre>:~$ python service.py <args>
+<pre>:~$ python service.py
 
  Option         Option longue GNU       Description
  -a             --about                 A propos du soft
