@@ -23,7 +23,7 @@ Une simple fenêtre Tkinter, à l'apparence d'un panneau de contrôle, offrant u
 Syntax pour afficher la liste des arguments :
 <pre>:~# python service -h
 :~# python service -?
-:~# python service --help<pre>
+:~# python service --help</pre>
 
 Liste des arguments :
 <pre> python service.py
