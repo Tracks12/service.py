@@ -358,9 +358,13 @@ def main():
 	global button, btn, label, lbl, step
 	print("{}> {}Initializing IHM{}_".format(info[2], color.GREEN, color.END))
 
-	root = Tk()
-	root.title(info[2].capitalize())
-	root.resizable(width=FALSE, height=FALSE)
+	try:
+		root = Tk()
+		root.title(info[2].capitalize())
+		root.resizable(width=FALSE, height=FALSE)
+	except:
+		print(" [ {}ERROR{} ] - No X server to run\n".format(color.BOLD+color.RED, color.END))
+		exit()
 
 	step = StringVar()
 
