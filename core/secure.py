@@ -13,7 +13,7 @@ def authentic(inf):
 	truth = {
 		"author": "Anarchy",
 		"repository": "https://tracks12.github.io/service.py/",
-		"size": [21128, 21088]
+		"size": [21090, 21050]
 	}
 
 	if(sys.version_info[0] == 2): x = 0

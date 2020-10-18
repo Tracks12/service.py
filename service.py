@@ -13,15 +13,14 @@ from encodings import utf_8
 
 import inspect, json, os, platform, sys, time
 from core.color import color
+from core.secure import authentic
 
 try:	# Python 2
 	import ttk
 	from Tkinter import *
-	from core.secure2 import authentic
 except:	# Python 3
 	import tkinter.ttk as ttk
 	from tkinter import *
-	from core.secure3 import authentic
 
 def madeLabel(panel, labels, _font):
 	for i, txt in enumerate(labels):
